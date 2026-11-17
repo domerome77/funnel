@@ -931,7 +931,7 @@ html.has-kb .sheet-layer { height: calc(var(--vvh, 100%) - var(--kb)); }
 /* the slider: Fixed on the left, the window grows to the right; the track bright from the left end to the thumb */
 .buffer { display: flex; flex-direction: column; gap: var(--space-4); width: 100%; }
 .buffer__slider { position: relative; height: 28px; }
-.buffer__track { position: absolute; left: 4px; right: 4px; top: 50%; height: 8px; transform: translateY(-50%); border-radius: var(--radius-full); background: color-mix(in srgb, var(--tone) 25%, transparent); }
+.buffer__track { position: absolute; left: 4px; right: 4px; top: 50%; height: 8px; transform: translateY(-50%); border-radius: var(--radius-full); background: var(--track, color-mix(in srgb, var(--tone) 25%, transparent)); }
 .vgauge__win { position: absolute; left: 4px; top: 50%; height: 8px; transform: translateY(-50%); border-radius: var(--radius-full) 0 0 var(--radius-full); background: var(--tone); pointer-events: none; }
 .buffer input[type=range] { -webkit-appearance: none; appearance: none; position: absolute; inset: 0; width: 100%; height: 28px; margin: 0; background: transparent; cursor: pointer; }
 .buffer input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 28px; height: 28px; border-radius: 50%; background: var(--color-bg-page); border: 3px solid var(--tone); box-shadow: var(--shadow-raised); }
@@ -944,6 +944,7 @@ html.has-kb .sheet-layer { height: calc(var(--vvh, 100%) - var(--kb)); }
 .buffer__tick:first-child { align-items: flex-start; transform: none; }
 .buffer__tick:last-child { align-items: flex-end; transform: translateX(-100%); }
 .buffer__tick > span { pointer-events: auto; cursor: pointer; white-space: nowrap; font-size: var(--font-size-label); line-height: var(--line-height-label); font-weight: 600; color: var(--color-text-secondary); }
+/* shared not picked (user 18.11.2026): the thumb and the filled part in the track's light grey, one colour */
 .buffer__tick.is-on > span { color: var(--tick-color); }
 
 .trust-card {
@@ -1209,7 +1210,7 @@ ul.place-list { list-style: none; }
 .ex-card--line:has(> .flight-add:only-child:focus-visible) { outline: 2px solid var(--color-focus-ring); outline-offset: 2px; }
 /* hover only darkens the outline, as No Worries (user 09.11.2026; was a grey fill) */
 @media (hover: hover) { .ex-card--line:has(> .flight-add:only-child):hover { border-color: var(--color-border-input); } }
-/* 100% Money Refund on Offers (user 06.11.2026): the title and the terms, the big switch with the price under it, as No Worries;
+/* 100% Money Back on Offers (user 06.11.2026): the title and the terms, the big switch with the price under it, as No Worries;
    the switch's checkbox covers the block (variant 2) or the whole card (variant 1), so it all toggles */
 .refund { position: relative; display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-12); width: 100%; }
 /* the text hugs its width, so the price ends where the terms line ends (user 06.11.2026); the switch stays at the right edge */
@@ -1699,7 +1700,7 @@ input:checked + .switch--lg::after { transform: translateX(20px); }
 /* the cards 8 under the switch (or 12 under the title); 16 between the Offers sections (user 09.11.2026 in Figma 3249:10362; was the block gap 24) */
 .offers-main { gap: var(--space-16); }
 .offers-main, .extras { padding-top: var(--space-8); } /* Details keeps 16 under its own header (no route header since 10.11.2026) */
-/* 100% Money Refund as No Worries: the title and the price on top, the terms and the switch under them; the card 12 / 16 / 16 */
+/* 100% Money Back as No Worries: the title and the price on top, the terms and the switch under them; the card 12 / 16 / 16 */
 .refund { flex-direction: column; align-items: stretch; gap: var(--space-4); }
 .refund__top, .refund__bottom { display: flex; gap: var(--space-12); }
 .refund__top { align-items: flex-end; justify-content: space-between; }
@@ -1916,7 +1917,7 @@ window.GO = window.GO || {};
       date: '2026-11-27', time: '10:15', timeMode: 'dropoff', offersScenario: 'empty' }) },
   ];
   // the Extras / Baggage variants left the menu in v5 (user 05.11.2026): Add-ons follows the approved design only
-  // 100% Money Refund on Offers (user 06.11.2026): 1 - its own card after Private, 2 - at the bottom of the Private card
+  // 100% Money Back on Offers (user 06.11.2026): 1 - its own card after Private, 2 - at the bottom of the Private card
   const REFUNDS = [[1, 'own card after Private'], [2, 'inside the Private card']];
   const refundItems = () => REFUNDS.map(([n, note]) => ({ label: (GO.offersRefund() === n ? '✓ ' : '') + 'Refund ' + n, note, run() {
     try { localStorage.setItem('go.refundVariant', n); } catch (e) { /* private mode: the session keeps the default */ }
@@ -2337,7 +2338,7 @@ GO.addonsHead = function () {
   return 3;
 };
 
-// 100% Money Refund on Offers, picked in the 9:41 menu (user 06.11.2026): 1 its own card after Private, 2 at the bottom of the Private card.
+// 100% Money Back on Offers, picked in the 9:41 menu (user 06.11.2026): 1 its own card after Private, 2 at the bottom of the Private card.
 // localStorage: it outlives Reset
 // Default 2 since the approved Mobile 11.11.2026 (3323:21153): the refund at the bottom of the Private card. A new key, so a 1 picked
 // in the menu before does not bring the old default back
@@ -2356,9 +2357,9 @@ GO.refundBlock = function (on, cls) {
   // offer cards), the terms and the big switch under them (v5: the price next to the title in h3, the switch on the right of both)
   // one line (user 17.11.2026): the name with "+4 €" and the terms under it on the left, the switch on the right
   return '<div class="refund refund--line' + (cls ? ' ' + cls : '') + '">' +
-    '<div class="refund__text"><span class="refund__head"><span class="t-label-lg refund__title">100% Money Refund</span><span class="t-label refund__price">+' + price + '</span></span>' +
+    '<div class="refund__text"><span class="refund__head"><span class="t-label-lg refund__title">100% Money Back</span><span class="t-label refund__price">+' + price + '</span></span>' +
       '<span class="t-caption c-tertiary">Cancel up to 48h before the transfer</span></div>' +
-    '<label class="refund__switch"><input type="checkbox" role="switch" data-act="refund" aria-label="100% Money Refund, ' + price + ', cancel up to 48h before the transfer"' + (on ? ' checked' : '') + '>' +
+    '<label class="refund__switch"><input type="checkbox" role="switch" data-act="refund" aria-label="100% Money Back, ' + price + ', cancel up to 48h before the transfer"' + (on ? ' checked' : '') + '>' +
       '<span class="switch" aria-hidden="true"></span></label>' +
   '</div>';
 };
@@ -2775,7 +2776,7 @@ GO.api = (function () {
     { id: 'child', icon: 'seat-child', label: 'Child safety seat', desc: 'From 15 to 36 kg' },
     { id: 'booster', icon: 'seat-booster', label: 'Booster (cushion)', desc: 'From 22 to 36 kg' },
   ];
-  const REFUND = 56; // 100% Money Refund, once per booking (client 06.11.2026; 56 € since user 17.11.2026, was 4)
+  const REFUND = 56; // 100% Money Back, once per booking (client 06.11.2026; 56 € since user 17.11.2026, was 4)
   const NO_WORRIES = 9; // per person, once per booking (Damijan 05.11.2026, was 5.90)
 
   // Vouchers for testing: HEY10 is the one in the layouts
@@ -2880,7 +2881,7 @@ GO.store = (function () {
     sel: { out: { key: null, id: null, filter: 'all' }, ret: { key: null, id: null, filter: 'all' } },
     infoOfferId: null,   // offer shown in the "about this ride" sheet
     sheetLeg: 'out',     // leg the offer sheets belong to
-    refund: false,       // 100% Money Refund, chosen on Offers (user 06.11.2026), once per booking
+    refund: false,       // 100% Money Back, chosen on Offers (user 06.11.2026), once per booking
     ex: null,            // Extras: luggage, No Worries, voucher, flights (see screens/extras.js)
     flightLeg: 'out',    // leg the flight sheet is for
     voucherDraft: '',
@@ -2940,6 +2941,7 @@ GO.router = (function () {
     '/extras/return/when': 'extras-when-return',
     '/extras/flight/manual': 'extras-flight-manual',
     '/extras/no-worries': 'extras-no-worries',
+    '/extras/money-back': 'extras-money-back',
     '/extras/seats': 'extras-seats',
     '/extras/total': 'extras-total',
     '/extras/luggage': 'extras-luggage',
@@ -4284,7 +4286,7 @@ GO.router = (function () {
       return '<button class="buffer__tick' + (k === at ? ' is-on' : '') + '" style="left:' + pos + '" data-act="pick" data-id="' + o.id + '" tabindex="-1" aria-hidden="true"><span>' + tickName(o) + '</span></button>';
     }).join('');
     const val = (cur.kind === 'flex' ? 'flexible pick-up, ' + hours(cur.window) : 'fixed pick-up') + ', ' + money(cur.unit);
-    return '<div class="buffer vgauge is-live" style="' + (on ? '--tone:var(--color-icon-success);--tick-color:var(--color-text-success)' : '--tone:var(--color-icon-muted);--tick-color:var(--color-text-primary)') + '">' +
+    return '<div class="buffer vgauge is-live" style="' + (on ? '--tone:var(--color-icon-success);--tick-color:var(--color-text-success)' : '--tone:color-mix(in srgb, var(--neutral-400) 25%, var(--color-bg-page));--track:var(--tone);--tick-color:var(--color-text-tertiary)') + '">' +
       '<div class="buffer__slider"><div class="buffer__track"></div><div class="vgauge__win" style="right:calc(14px + (100% - 28px) * ' + (1 - at / last) + ')"></div>' +
         '<input type="range" data-gauge min="0" max="' + last + '" step="1" value="' + at + '" aria-label="Pick-up time" aria-valuetext="' + esc(val) + '">' +
       '</div><div class="buffer__ticks">' + ticks + '</div></div>';
@@ -4293,10 +4295,10 @@ GO.router = (function () {
     return '<div class="offer' + (isSel ? ' is-selected' : '') + '">' + hit(o, isSel) +
       '<div class="offer__content vgap">' + head + '<div class="offer__body">' + roleStops(c, o) + price(o) + '</div>' + (tail || '') + '</div></div>';
   }
-  // 100% Money Refund (client 06.11.2026, moved here from Add-ons): once per booking, €4 into the total.
+  // 100% Money Back (client 06.11.2026, moved here from Add-ons): once per booking, €4 into the total.
   // 9:41 menu: 1 - its own white card after Private; 2 - at the bottom of the Private card under a line, with the switch
   function refundCard(c) {
-    return GO.offersRefund() === 1 && !c.data.empty ? '<section class="ex-card ex-card--line refund-card" aria-label="100% Money Refund">' + GO.refundBlock(!!c.s.refund) + '</section>' : '';
+    return GO.offersRefund() === 1 && !c.data.empty ? '<section class="ex-card ex-card--line refund-card" aria-label="100% Money Back">' + GO.refundBlock(!!c.s.refund) + '</section>' : '';
   }
   function refundIn(c) {
     return GO.offersRefund() === 2 ? '<hr class="offer__rule">' + GO.refundBlock(!!c.s.refund, 'refund--in') : '';
@@ -4642,7 +4644,7 @@ GO.router = (function () {
       : [['shuttle', 'You may share the ride with other passengers, with a few short stops on the way.'], drive, arrive]);
     items.push(['check-circle', 'Free cancellation within 24h of booking']);
     // the refund switched on in the Private card shows in What's included (user 17.11.2026)
-    if (false && priv) items.push(['check-circle', '<strong class="ride-strong">100% Money Refund</strong> if you cancel up to 48h before the transfer']);
+    if (false && priv) items.push(['check-circle', '<strong class="ride-strong">100% Money Back</strong> if you cancel up to 48h before the transfer']);
     return '<ul class="check-list">' + items.map(i => checkItem(i[0], i[1])).join('') + '</ul>';
   }
   function rideOf(c, kind) {
@@ -4778,7 +4780,7 @@ GO.router = (function () {
       return sheetHead('Price details', c.round ? routeLabel(api.legSearch(c.s, 'out')) + ' and back' : routeLabel(c.q) + ', ' + fmtDay(c.q.date)) +
         '<div class="sheet__body sheet__body--gap16">' +
           '<dl class="price-lines">' + lines.map(line).join('') +
-            (refund ? '<div class="price-line"><dt class="t-body">100% Money Refund</dt><dd class="t-body">' + money2(refund) + '</dd></div>' : '') +
+            (refund ? '<div class="price-line"><dt class="t-body">100% Money Back</dt><dd class="t-body">' + money2(refund) + '</dd></div>' : '') +
             '<div class="price-line"><dt class="t-body">Booking fee</dt><dd class="t-body">' + money2(fee) + '</dd></div>' +
             '<div class="price-line price-line--total"><dt class="t-label-lg">Total</dt><dd class="t-h3">' + money2(sum) + '</dd></div>' +
           '</dl>' +
@@ -4831,7 +4833,7 @@ GO.router = (function () {
   }
 
   // ---------- price ----------
-  // 100% Money Refund (user 17.11.2026): 10% of all the picked transfers, shown per person
+  // 100% Money Back (user 17.11.2026): 10% of all the picked transfers, shown per person
   function refundPP(s, L) {
     const pax = Math.max(1, s.adults + s.children);
     return Math.ceil(L.reduce((a, l) => a + (l.o ? l.o.total : 0), 0) * 0.1 / pax - 1e-9); // rounded up to whole euros (user 17.11.2026)
@@ -4841,7 +4843,7 @@ GO.router = (function () {
     const transfer = L.reduce((a, l) => a + l.o.total, 0);
     const lines = [{ label: (L.length > 1 ? 'Transfers, ' : 'Transfer, ') + rides(L.length) + ', ' + paxLabel(s), value: transfer }];
     if (e.nw) lines.push({ label: 'No Worries package, ' + people(pax), value: api.NO_WORRIES * pax });
-    if (s.refund) lines.push({ label: '100% Money Refund, ' + people(pax), value: refundPP(s, L) * pax }); // chosen on Add-ons
+    if (s.refund) lines.push({ label: '100% Money Back, ' + people(pax), value: refundPP(s, L) * pax }); // chosen on Add-ons
     const charged = L.filter(l => l.o.kind !== 'private').length; // private rides carry luggage for free
     api.LUGGAGE.forEach(item => {
       const n = e.lug[item.id];
@@ -5046,7 +5048,7 @@ GO.router = (function () {
     '<path d="M20.604 12.2909C20.604 17.5698 14.8459 21.4092 12.7509 22.6315C12.5128 22.7704 12.3937 22.8398 12.2257 22.8759C12.1605 22.8898 12.0803 22.8968 12.0002 22.8968V1.60931C12.0516 1.60931 12.103 1.613 12.154 1.62037C12.269 1.63699 12.3808 1.67891 12.6044 1.76276L18.3709 3.92518C19.176 4.2271 19.5785 4.37806 19.8752 4.63949C20.1372 4.87045 20.3391 5.16175 20.4634 5.48823C20.604 5.85779 20.604 6.28772 20.604 7.14757V12.2909Z" fill="#088079"/>' +
     '<path opacity=".5" d="M11.3884 20.7083C11.5824 20.8215 11.6794 20.878 11.8162 20.9074C11.9225 20.9302 12.0775 20.9302 12.1837 20.9074C12.3206 20.878 12.4176 20.8215 12.6115 20.7083C14.3184 19.7125 19.0094 16.5846 19.0094 12.2839V8.09361C19.0094 7.39309 19.0094 7.04283 18.8949 6.74175C18.7937 6.47577 18.6292 6.23844 18.4157 6.05028C18.174 5.83729 17.846 5.71431 17.1901 5.46834L12.4922 3.70661C12.31 3.6383 12.219 3.60415 12.1253 3.59061C12.0422 3.5786 11.9578 3.5786 11.8747 3.59061C11.781 3.60415 11.6899 3.6383 11.5077 3.70661L6.80979 5.46834C6.15388 5.71431 5.82592 5.83729 5.58423 6.05028C5.37073 6.23844 5.20626 6.47577 5.10505 6.74175C4.99048 7.04283 4.99048 7.39309 4.99048 8.09361V12.2839C4.99048 16.5846 9.68154 19.7125 11.3884 20.7083Z" fill="#fff" fill-opacity=".5"/>' +
     '<path d="M9.43994 11.6367L11.294 13.4907L15.4656 9.31909" stroke="#fff" stroke-width="1.39812" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-  // 100% Money Refund at the top of Add-ons (user 17.11.2026; was in the Private card on Offers): the No Worries card,
+  // 100% Money Back at the top of Add-ons (user 17.11.2026; was in the Private card on Offers): the No Worries card,
   // a teal coin-back icon, the price per person 10% of the picked transfers; the switch toggles it
   const RF_ICON = '<svg class="nw__shield" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">' +
     // two-tone as the No Worries shield (user 17.11.2026): the left half at 50%, the right half full, a lighter inner disc
@@ -5059,11 +5061,13 @@ GO.router = (function () {
     const pp = refundPP(s, L);
     const num = String(pp);
     return '<section class="nw nw--v5" aria-labelledby="rf-title">' +
-      '<div class="nw__top"><h2 id="rf-title" class="nw__title nw__title--kicker">' + RF_ICON + '<span class="nw__names"><span class="nw__kicker t-body-sm">Change of plans?</span><span class="t-h3">100% Money Refund</span></span></h2>' +
+      '<button type="button" class="nw__zone" data-act="rf-more" tabindex="-1" aria-hidden="true"></button>' +
+      '<div class="nw__top"><h2 id="rf-title" class="nw__title nw__title--kicker">' + RF_ICON + '<span class="nw__names"><span class="nw__kicker t-body-sm">Change of plans?</span><span class="t-h3">100% Money Back</span></span></h2>' +
         '<label for="rf-switch" class="offer__amount nw__price"><span class="offer__num">' + num + '</span><span class="offer__cur">€</span>' +
           '<span class="vper" aria-hidden="true">/' + GO.icon('user', 16) + '</span><span class="sr-only">per person</span></label></div>' +
-      '<div class="nw__bottom"><p class="nw__promise c-secondary">Cancel up to 48h before the transfer and get all your money back.</p>' +
-        '<label class="nw__switch"><input id="rf-switch" type="checkbox" role="switch" data-act="refund" aria-label="100% Money Refund, ' + num + ' € per person"' + (s.refund ? ' checked' : '') + '>' +
+      '<div class="nw__bottom"><p class="nw__promise c-secondary">Cancel up to 48h before the transfer.<br>' + // "Find out more" on its own line, as in No Worries (user 18.11.2026)
+          '<button class="link nw__more" data-act="rf-more">Find out more</button></p>' +
+        '<label class="nw__switch"><input id="rf-switch" type="checkbox" role="switch" data-act="refund" aria-label="100% Money Back, ' + num + ' € per person"' + (s.refund ? ' checked' : '') + '>' +
         '<span class="switch switch--lg" aria-hidden="true"></span></label></div>' +
     '</section>';
   }
@@ -5316,6 +5320,7 @@ GO.router = (function () {
       nw() { setEx({ nw: !ex().nw }); refreshKeep('[data-act=nw]'); },
       refund() { GO.store.set({ refund: !GO.store.get().refund }); refreshKeep('[data-act=refund]'); },
       'nw-more': () => GO.router.go('/extras/no-worries'),
+      'rf-more': () => GO.router.go('/extras/money-back'),
       flight(el) { GO.store.set({ flightLeg: el.dataset.leg }); GO.router.go('/extras/flight'); },
       // "consider changing it" / "Change date" / "Are you sure?": the date and time screen, full screen; a new time needs
       // a new ride, so Confirm opens the leg's offers, the cross comes back here (user 21.10.2026)
@@ -5769,6 +5774,32 @@ GO.router = (function () {
     ['What about delayed or rerouted flights?', 'We find a free replacement transfer'],
     ['How do you let us know you missed your flight or need a new transfer?', 'Your confirmation email has our contact details. In any of these cases, call us as soon as possible.'],
   ];
+  // ---------- sheet: 100% Money Back, find out more (user 18.11.2026): as the No Worries sheet, shorter ----------
+  const RF_COVER = [
+    ['Plans changed?', 'Cancel up to 48h before the transfer and get 100% of your money back'],
+    ['How do you get it?', 'Cancel through the link in your confirmation email, no questions asked'],
+    ['When does the money arrive?', 'Back on your card within 5–10 working days'],
+  ];
+  GO.screens['extras-money-back'] = {
+    overlay: true, base: 'extras', sheetClass: 'sheet--bottom',
+    render(s) {
+      const price = refundPP(s, legs(s).filter(l => l.o)) + ' € per person';
+      return '<div class="sheet-handle" aria-hidden="true"></div>' +
+        '<header class="sheet-header"><div class="sheet-header__titles"><h2 id="sheet-title" class="t-h1">100% Money Back</h2></div>' +
+        '<button class="icon-btn" data-act="close" aria-label="Close">' + ic('close', 24) + '</button></header>' +
+        '<div class="sheet__body sheet__body--gap16">' +
+          '<ul class="nw-cover">' + RF_COVER.map(([q, a]) => '<li class="nw-cover__item">' + ic('check-circle', 20, 'icon--success') +
+            '<span class="nw-cover__text"><span class="t-body-sm c-secondary">' + q + '</span><span class="t-label">' + a + '</span></span></li>').join('') + '</ul>' +
+          '<button class="link t-label nw-terms" data-act="nw-terms">Terms and conditions of service</button>' +
+        '</div>' +
+        (s.refund ? '' : '<div class="cta-bar"><button class="btn btn--primary" data-act="rf-sheet">Add for ' + price + '</button></div>');
+    },
+    actions: {
+      close: () => GO.router.back(),
+      'rf-sheet'() { if (!GO.store.get().refund) GO.store.set({ refund: true }); GO.router.back(); },
+      'nw-terms': () => u.toast('Terms open in a new tab on the real site'),
+    },
+  };
   GO.screens['extras-no-worries'] = {
     overlay: true, base: 'extras', sheetClass: 'sheet--bottom',
     render(s) {
@@ -7030,7 +7061,7 @@ GO.router = (function () {
     const n = digits(pay.number);
     const items = [L.length + (L.length > 1 ? ' transfers' : ' transfer')];
     if (e.nw) items.push('No Worries package');
-    if (s.refund) items.push('100% Money Refund');
+    if (s.refund) items.push('100% Money Back');
     const LUG_SHORT = { trolley: 'trolley', s20: '20 kg suitcase', s32: '32 kg suitcase', special: 'special item' };
     GO.api.LUGGAGE.forEach(i => { const k = e.lug[i.id]; if (k) items.push(k + ' ' + LUG_SHORT[i.id] + (k > 1 ? 's' : '')); });
     if (e.voucher) items.push('promo code ' + e.voucher.code);
