@@ -703,6 +703,13 @@ html.has-kb .sheet-layer { height: calc(var(--vvh, 100%) - var(--kb)); }
   background: var(--color-bg-overlay);
   animation: fade-in .2s ease-out;
 }
+/* iOS Safari (v14, user 18.11.2026): with the keyboard open the layer ends at the visible area, and the see-through address pill
+   and form bar above the keys showed the page behind. The sheet's white carries on under them, below the screen otherwise */
+.sheet-layer::after {
+  content: ''; position: absolute; left: 0; right: 0; top: 100%; height: 100vh;
+  background: var(--color-bg-page); pointer-events: none;
+}
+.sheet-layer:has(> .sheet--dialog)::after { background: var(--color-bg-overlay); }
 .sheet {
   width: 100%; max-width: var(--app-max-width); height: 100%;
   display: flex; flex-direction: column;
@@ -3745,9 +3752,24 @@ GO.router = (function () {
         const ok = MINUTES.find(m => !clashAt(d.h, m));
         if (ok) d.m = ok;
       }
-      update('#t-hour');
+      patchTime(root);
     });
-    min.addEventListener('change', () => { d.m = min.value; update('#t-min'); });
+    min.addEventListener('change', () => { d.m = min.value; patchTime(root); });
+  }
+
+  // A pick in the hour / minutes select patches the screen in place (v14, user 18.11.2026): rebuilding the selects and focusing
+  // the new one under the open iOS picker dropped the pick, so hours couldn't be selected on the phone
+  function patchTime(root) {
+    const sheet = root.closest('.sheet') || document.querySelector('.sheet');
+    const hour = sheet.querySelector('#t-hour'), min = sheet.querySelector('#t-min');
+    Array.from(hour.options).forEach(o => { o.disabled = MINUTES.every(m => clashAt(o.value, m)); });
+    Array.from(min.options).forEach(o => { o.disabled = clashAt(d.h, o.value); });
+    if (hour.value !== d.h) hour.value = d.h;
+    if (min.value !== d.m) min.value = d.m;
+    sheet.querySelector('#sheet-title').innerHTML = title();
+    const alert = sheet.querySelector('#when-alert');
+    if (alert) alert.innerHTML = clashNote() || nightNote() || (fixedDep() ? fixedNote() : fixedArr() ? fixedArrNote() : '');
+    sheet.querySelector('.cta-bar').innerHTML = footer();
   }
 
   // From Finish booking the screen starts from what is booked, not from the search (user 21.10.2026).
