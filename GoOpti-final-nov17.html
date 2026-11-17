@@ -1209,7 +1209,7 @@ ul.place-list { list-style: none; }
 .ex-card--line:has(> .flight-add:only-child:focus-visible) { outline: 2px solid var(--color-focus-ring); outline-offset: 2px; }
 /* hover only darkens the outline, as No Worries (user 09.11.2026; was a grey fill) */
 @media (hover: hover) { .ex-card--line:has(> .flight-add:only-child):hover { border-color: var(--color-border-input); } }
-/* 100% money refund on Offers (user 06.11.2026): the title and the terms, the big switch with the price under it, as No Worries;
+/* 100% Money Refund on Offers (user 06.11.2026): the title and the terms, the big switch with the price under it, as No Worries;
    the switch's checkbox covers the block (variant 2) or the whole card (variant 1), so it all toggles */
 .refund { position: relative; display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-12); width: 100%; }
 /* the text hugs its width, so the price ends where the terms line ends (user 06.11.2026); the switch stays at the right edge */
@@ -1353,6 +1353,10 @@ input:checked + .switch--lg::after { transform: translateX(20px); }
 /* login popups, left-aligned (user 17.11.2026; were centred with the van over the title): the title level with the cross,
    the text 8 under it, the form 24 lower, everything flush left on one 24 margin */
 .auth-dialog__close { position: absolute; top: var(--space-16); right: var(--space-12); }
+.sheet--auth { position: relative; overflow-y: auto; overscroll-behavior: contain; }
+.sheet--auth .auth-dialog__close { top: var(--space-24); }
+.sheet--auth .auth { padding: var(--space-16) var(--layout-page-margin, var(--space-16)) calc(var(--space-24) + var(--safe-bottom)); }
+.sheet--auth.sheet--full .auth-dialog__close { top: calc(var(--safe-top) + var(--space-16)); }
 .auth {
   display: flex; flex-direction: column; align-items: stretch; gap: var(--space-8);
   padding: var(--space-24) var(--space-24) var(--space-24);
@@ -1389,10 +1393,10 @@ input:checked + .switch--lg::after { transform: translateX(20px); }
 /* the divider the full height of the field, as in the names (Anya 16.11.2026): over the field's vertical padding, 15 / 14 with focus */
 .field--phone .phone-cc { margin-block: -15px; }
 .field--phone:focus-within .phone-cc { margin-block: -14px; }
-.phone-cc__flag { position: relative; display: flex; width: 32px; height: 24px; border-radius: var(--radius-xs); overflow: hidden; }
+.phone-cc__flag { position: relative; display: flex; width: 24px; height: 18px; /* smaller (user 17.11.2026; was 32 × 24) */ border-radius: var(--radius-xs); overflow: hidden; }
 /* a light outline over the flag, so a white stripe keeps its edge (user 12.11.2026; the inset shadow was painted under the svg and never showed) */
 .phone-cc__flag::after { content: ''; position: absolute; inset: 0; border: 1px solid var(--color-border-subtle); border-radius: inherit; pointer-events: none; }
-.phone-cc__flag svg { display: block; }
+.phone-cc__flag svg { display: block; width: 100%; height: 100%; }
 /* the code is fixed text before the number, changed only through the list (22.10.2026) */
 .phone-cc__code { flex-shrink: 0; color: var(--color-text-primary); margin-right: calc(-1 * var(--space-4)); }
 .phone-cc select { position: absolute; top: -12px; bottom: -12px; left: -16px; right: 0; width: calc(100% + 16px); opacity: 0; cursor: pointer; font-size: 16px; }
@@ -1695,7 +1699,7 @@ input:checked + .switch--lg::after { transform: translateX(20px); }
 /* the cards 8 under the switch (or 12 under the title); 16 between the Offers sections (user 09.11.2026 in Figma 3249:10362; was the block gap 24) */
 .offers-main { gap: var(--space-16); }
 .offers-main, .extras { padding-top: var(--space-8); } /* Details keeps 16 under its own header (no route header since 10.11.2026) */
-/* 100% money refund as No Worries: the title and the price on top, the terms and the switch under them; the card 12 / 16 / 16 */
+/* 100% Money Refund as No Worries: the title and the price on top, the terms and the switch under them; the card 12 / 16 / 16 */
 .refund { flex-direction: column; align-items: stretch; gap: var(--space-4); }
 .refund__top, .refund__bottom { display: flex; gap: var(--space-12); }
 .refund__top { align-items: flex-end; justify-content: space-between; }
@@ -1776,9 +1780,56 @@ input:checked + .switch--lg::after { transform: translateX(20px); }
 /* on the baseline of the price with the € (user 17.11.2026; was centred, sat high), lighter */
 .vper { display: inline-flex; align-items: baseline; align-self: baseline; gap: 1px; margin-left: 2px; font-size: var(--font-size-label-lg); line-height: var(--line-height-label-lg); font-weight: 400; color: var(--neutral-400); }
 .vper .icon { color: var(--neutral-300); align-self: flex-end; margin-bottom: 4px; margin-left: -3px; }
+
+/* ---------- v11 (17.11.2026): visible labels, steps, contrast ---------- */
+/* one field pattern everywhere: the label 12/16 grey over the value 16/24 inside the 56 box, as Home and Edit search.
+   Empty and unfocused, the label stands in the place of the old placeholder (16, grey), so the empty form looks the same */
+.fl { position: relative; flex: 1; min-width: 0; display: flex; align-self: stretch; margin-block: -15px; }
+.field:focus-within > .fl { margin-block: -14px; }
+.fl > input { flex: 1; min-width: 0; padding: 23px 0 7px; }
+.field:focus-within > .fl > input { padding: 22px 0 6px; }
+.fl__label { position: absolute; left: 0; right: 0; top: 7px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+  font-size: var(--font-size-label-sm); line-height: 16px; font-weight: 400; color: var(--color-text-tertiary); pointer-events: none;
+  transition: top 150ms cubic-bezier(0.2, 0, 0, 1), font-size 150ms cubic-bezier(0.2, 0, 0, 1), line-height 150ms; }
+.field:focus-within > .fl .fl__label { top: 6px; }
+.fl:not(.fl--up):has(> input:placeholder-shown):not(:focus-within) .fl__label { top: 50%; transform: translateY(-50%);
+  font-size: var(--font-size-body); line-height: var(--line-height-body); }
+.field--error .fl__label { color: var(--color-text-error); }
+/* names and the passengers' halves: each half keeps its own 16 inset and its own focus ring */
+.field--names > .fl, .field--names:focus-within > .fl { margin-block: 0; }
+.field--names > .fl > input, .field--names:focus-within > .fl > input { padding: 23px var(--space-16) 7px; }
+.field--names > .fl .fl__label, .field--names:focus-within > .fl .fl__label { left: var(--space-16); right: var(--space-16); top: 8px; }
+.field--names > .fl:first-child > input { border-radius: calc(var(--radius-md) - 1px) 0 0 calc(var(--radius-md) - 1px); }
+.field--names > .fl:last-child > input { border-radius: 0 calc(var(--radius-md) - 1px) calc(var(--radius-md) - 1px) 0; }
+/* phone: "+386" and the number on the value line under "Mobile number" */
+.fl--phone { gap: var(--space-8); }
+.fl--phone > .phone-cc__code { padding: 23px 0 7px; line-height: 24px; flex-shrink: 0; }
+.field:focus-within > .fl--phone > .phone-cc__code { padding: 22px 0 6px; }
+@media (prefers-reduced-motion: reduce) { .fl__label { transition: none; } }
+/* the step over the screen title: where you are in the three steps */
+.page-step { display: block; margin-bottom: 2px; font-weight: 400; color: var(--color-text-tertiary); }
+.details__head { align-items: flex-end; }
+/* the refund says its price */
+.refund__price { flex-shrink: 0; font-weight: 600; color: var(--color-text-primary); }
+/* contrast (AA 4.5:1 for text): the quiet checkbox labels and the header log-in links #858585 (3.7:1) -> #6b6b6b (5.3:1);
+   the "€ / person" unit #a8a8a8 (2.3:1) -> #6b6b6b, its icon #858585 */
+.details-checks .checkbox:has([data-invoice]:not(:checked)) .t-body, .details-checks .checkbox:has([data-others]:not(:checked)) .t-body { color: var(--neutral-600); }
+.details-checks .checkbox:has([data-invoice]:not(:checked)) .checkbox__box, .details-checks .checkbox:has([data-others]:not(:checked)) .checkbox__box { border-color: var(--neutral-500); }
+.details__head .account__login { color: var(--neutral-600); }
+/* Log in and Google: same 44×44 finger target, 20 icons (user 17.11.2026) */
+.account__acts { gap: var(--space-8); }
+.account__login, .details__head .account__login { height: 44px; min-height: 44px; min-width: 44px; padding: 0 var(--space-12); }
+.account__login[data-act="login"], .details__head .account__login[data-act="login"] { padding-right: 0; }
+.account__login[data-p="Google"], .details__head .account__login[data-p="Google"] { width: 44px; padding: 0; }
+.account__login::after, .details__head .account__login::after { inset: 0; }
+.account__login svg, .account__login .icon, .details__head .account__login svg, .details__head .account__login .icon { width: 20px; height: 20px; }
+.vper { color: var(--neutral-600); }
+.vper .icon { color: var(--neutral-500); }
 </style>
 </head>
 <body>
+
+
 <div id="app"></div>
 <div id="layer"></div>
 <noscript>This prototype needs JavaScript.</noscript>
@@ -1865,7 +1916,7 @@ window.GO = window.GO || {};
       date: '2026-11-27', time: '10:15', timeMode: 'dropoff', offersScenario: 'empty' }) },
   ];
   // the Extras / Baggage variants left the menu in v5 (user 05.11.2026): Add-ons follows the approved design only
-  // 100% money refund on Offers (user 06.11.2026): 1 - its own card after Private, 2 - at the bottom of the Private card
+  // 100% Money Refund on Offers (user 06.11.2026): 1 - its own card after Private, 2 - at the bottom of the Private card
   const REFUNDS = [[1, 'own card after Private'], [2, 'inside the Private card']];
   const refundItems = () => REFUNDS.map(([n, note]) => ({ label: (GO.offersRefund() === n ? '✓ ' : '') + 'Refund ' + n, note, run() {
     try { localStorage.setItem('go.refundVariant', n); } catch (e) { /* private mode: the session keeps the default */ }
@@ -1874,7 +1925,7 @@ window.GO = window.GO || {};
   const ITEMS = () => [
     { label: 'Back', run: () => GO.router.back() },
     { label: 'Reset', note: 'empty booking, home', run: () => { GO.store.reset(); location.replace(location.pathname + location.search); } },
-  ].concat(refundItems(), RIDES.map(r => ({ label: r.label, note: r.note, run() {
+  ].concat(RIDES.map(r => ({ label: r.label, note: r.note, run() {
     GO.store.reset();
     GO.store.set(r.patch());
     history.replaceState({ depth: 0 }, '', location.pathname + location.search + '#/offers');
@@ -2245,7 +2296,38 @@ GO.routeHead = function (route, meta, editLabel) {
   '</header></div>';
 };
 // the screen title under the route header (22 bold, 16 / 16 / 4)
-GO.pageTitle = function (text, id) { return '<h1 class="page-title t-h2"' + (id ? ' id="' + id + '"' : '') + '>' + text + '</h1>'; };
+// v11: visible labels in every text field, the Home / Edit search pattern (label 12/16 grey over the value 16/24, 56 high).
+// Empty and unfocused, the label sits where the placeholder was, so the empty form looks as approved; typed, it stays visible.
+GO.floatLabels = function (html) {
+  if (html.indexOf('sr-only') < 0) return html;
+  const vis = t => { const i = t.lastIndexOf(', '); if (i < 0) return { pre: '', txt: t };
+    const v = t.slice(i + 2); return { pre: t.slice(0, i + 2), txt: v.charAt(0).toUpperCase() + v.slice(1) }; };
+  const build = (id, text, input) => {
+    if (/type="(?:checkbox|radio|range|search)"/.test(input)) return null;
+    const tel = /type="tel"/.test(input);
+    const ph = (input.match(/placeholder="([^"]*)"/) || [])[1];
+    const L = vis(text);
+    const label = '<label class="fl__label" for="' + id + '">' + (L.pre ? '<span class="sr-only">' + L.pre + '</span>' : '') + L.txt + '</label>';
+    // the example number stays as a hint under the label; a placeholder that only repeated the label goes
+    const inp = tel ? input : input.replace(/placeholder="[^"]*"/, 'placeholder=" "');
+    return '<span class="fl' + (tel ? ' fl--up' : '') + '">' + label + inp + '</span>';
+  };
+  // phone: the "+386" code joins the number under one "Mobile number" label
+  html = html.replace(/(<span class="phone-cc__code[^"]*"[^>]*>[^<]*<\/span>)<label class="sr-only" for="([^"]+)">([^<]+)<\/label>(<input [^>]*>)/g,
+    (m, code, id, text, input) => { const b = build(id, text, input); return b ? b.replace('class="fl fl--up"', 'class="fl fl--up fl--phone"').replace('<input ', code + '<input ') : m; });
+  // label inside the field, right before its input (names, passengers, profile)
+  html = html.replace(/<label class="sr-only" for="([^"]+)">([^<]+)<\/label>(<input [^>]*>)/g,
+    (m, id, text, input) => build(id, text, input) || m);
+  // label before the field box (Details email, Log in email)
+  html = html.replace(/<label class="sr-only" for="([^"]+)">([^<]+)<\/label>(<div class="field[^"]*">)(<input [^>]*>)/g,
+    (m, id, text, box, input) => { const b = build(id, text, input); return b ? box + b : m; });
+  return html;
+};
+// the steps of the booking, shown over the screen title (forms guide: show progress through a multi-page form)
+GO.STEPS = { 'Choose your ride': 1, 'Choose add-ons': 2, 'Passenger details': 3 };
+GO.pageTitle = function (text, id) {
+  const n = GO.STEPS[text];
+  if (n) return '<h1 class="page-title t-h2"' + (id ? ' id="' + id + '"' : '') + '><span class="page-step t-caption">Step ' + n + ' of 3</span>' + text + '</h1>'; return '<h1 class="page-title t-h2"' + (id ? ' id="' + id + '"' : '') + '>' + text + '</h1>'; };
 
 // Add-ons header picked in the 9:41 menu (frame.js): 1 folding Booking details, 2 every ride (28.10.2026). localStorage: it outlives Reset.
 GO.addonsHead = function () {
@@ -2255,11 +2337,12 @@ GO.addonsHead = function () {
   return 3;
 };
 
-// 100% money refund on Offers, picked in the 9:41 menu (user 06.11.2026): 1 its own card after Private, 2 at the bottom of the Private card.
+// 100% Money Refund on Offers, picked in the 9:41 menu (user 06.11.2026): 1 its own card after Private, 2 at the bottom of the Private card.
 // localStorage: it outlives Reset
 // Default 2 since the approved Mobile 11.11.2026 (3323:21153): the refund at the bottom of the Private card. A new key, so a 1 picked
 // in the menu before does not bring the old default back
-GO.offersRefund = function () {
+// 0 since user 17.11.2026: the refund moved to the top of Add-ons, as a card like No Worries; nothing of it on Offers
+GO.offersRefund = function () { return 0;
   try { return +localStorage.getItem('go.refundVariant') === 1 ? 1 : 2; } catch (e) { return 2; }
 };
 // The refund block, shared by both variants: one row with the title on the left and the price on the right (user 06.11.2026;
@@ -2273,9 +2356,9 @@ GO.refundBlock = function (on, cls) {
   // offer cards), the terms and the big switch under them (v5: the price next to the title in h3, the switch on the right of both)
   // one line (user 17.11.2026): the name with "+4 €" and the terms under it on the left, the switch on the right
   return '<div class="refund refund--line' + (cls ? ' ' + cls : '') + '">' +
-    '<div class="refund__text"><span class="refund__head"><span class="t-label-lg refund__title">100% money refund</span></span>' +
+    '<div class="refund__text"><span class="refund__head"><span class="t-label-lg refund__title">100% Money Refund</span><span class="t-label refund__price">+' + price + '</span></span>' +
       '<span class="t-caption c-tertiary">Cancel up to 48h before the transfer</span></div>' +
-    '<label class="refund__switch"><input type="checkbox" role="switch" data-act="refund" aria-label="100% money refund, ' + price + ', cancel up to 48h before the transfer"' + (on ? ' checked' : '') + '>' +
+    '<label class="refund__switch"><input type="checkbox" role="switch" data-act="refund" aria-label="100% Money Refund, ' + price + ', cancel up to 48h before the transfer"' + (on ? ' checked' : '') + '>' +
       '<span class="switch" aria-hidden="true"></span></label>' +
   '</div>';
 };
@@ -2692,7 +2775,7 @@ GO.api = (function () {
     { id: 'child', icon: 'seat-child', label: 'Child safety seat', desc: 'From 15 to 36 kg' },
     { id: 'booster', icon: 'seat-booster', label: 'Booster (cushion)', desc: 'From 22 to 36 kg' },
   ];
-  const REFUND = 56; // 100% money refund, once per booking (client 06.11.2026; 56 € since user 17.11.2026, was 4)
+  const REFUND = 56; // 100% Money Refund, once per booking (client 06.11.2026; 56 € since user 17.11.2026, was 4)
   const NO_WORRIES = 9; // per person, once per booking (Damijan 05.11.2026, was 5.90)
 
   // Vouchers for testing: HEY10 is the one in the layouts
@@ -2797,7 +2880,7 @@ GO.store = (function () {
     sel: { out: { key: null, id: null, filter: 'all' }, ret: { key: null, id: null, filter: 'all' } },
     infoOfferId: null,   // offer shown in the "about this ride" sheet
     sheetLeg: 'out',     // leg the offer sheets belong to
-    refund: false,       // 100% money refund, chosen on Offers (user 06.11.2026), once per booking
+    refund: false,       // 100% Money Refund, chosen on Offers (user 06.11.2026), once per booking
     ex: null,            // Extras: luggage, No Worries, voucher, flights (see screens/extras.js)
     flightLeg: 'out',    // leg the flight sheet is for
     voucherDraft: '',
@@ -2912,16 +2995,16 @@ GO.router = (function () {
       const switching = !!overlayName;
       overlayName = name;
       layer.innerHTML = '<div class="sheet-layer"><div class="sheet' + (scr.sheetClass ? ' ' + scr.sheetClass : '') + (switching ? ' sheet--no-anim' : '') +
-        '" role="dialog" aria-modal="true" aria-labelledby="sheet-title">' + scr.render(state) + '</div></div>';
+        '" role="dialog" aria-modal="true" aria-labelledby="sheet-title">' + GO.floatLabels(scr.render(state)) + '</div></div>';
       document.body.classList.add('is-locked');
-      document.getElementById('app').setAttribute('aria-hidden', 'true');
+      document.getElementById('app').inert = true; // inert, not aria-hidden: hidden content must not stay focusable (v11)
       if (scr.mount) scr.mount(layer.querySelector('.sheet'));
       fitSheet();
     } else {
       overlayName = null;
       layer.innerHTML = '';
       document.body.classList.remove('is-locked');
-      document.getElementById('app').removeAttribute('aria-hidden');
+      document.getElementById('app').inert = false;
     }
     lastDepth = depth();
   }
@@ -2957,7 +3040,7 @@ GO.router = (function () {
     const y = window.scrollY;
     if (baseName) scrollMemo[baseName] = y;
     baseName = name;
-    app.innerHTML = GO.screens[name].render(state);
+    app.innerHTML = GO.floatLabels(GO.screens[name].render(state));
     if (GO.screens[name].mount) GO.screens[name].mount(app);
     window.scrollTo(0, !isNew ? y : goingBack ? (scrollMemo[name] || 0) : 0);
   }
@@ -4210,15 +4293,15 @@ GO.router = (function () {
     return '<div class="offer' + (isSel ? ' is-selected' : '') + '">' + hit(o, isSel) +
       '<div class="offer__content vgap">' + head + '<div class="offer__body">' + roleStops(c, o) + price(o) + '</div>' + (tail || '') + '</div></div>';
   }
-  // 100% money refund (client 06.11.2026, moved here from Add-ons): once per booking, €4 into the total.
+  // 100% Money Refund (client 06.11.2026, moved here from Add-ons): once per booking, €4 into the total.
   // 9:41 menu: 1 - its own white card after Private; 2 - at the bottom of the Private card under a line, with the switch
   function refundCard(c) {
-    return GO.offersRefund() === 1 && !c.data.empty ? '<section class="ex-card ex-card--line refund-card" aria-label="100% money refund">' + GO.refundBlock(!!c.s.refund) + '</section>' : '';
+    return GO.offersRefund() === 1 && !c.data.empty ? '<section class="ex-card ex-card--line refund-card" aria-label="100% Money Refund">' + GO.refundBlock(!!c.s.refund) + '</section>' : '';
   }
   function refundIn(c) {
     return GO.offersRefund() === 2 ? '<hr class="offer__rule">' + GO.refundBlock(!!c.s.refund, 'refund--in') : '';
   }
-  function refundSum(s) { return s.refund ? api.REFUND : 0; }
+  function refundSum() { return 0; } // the refund is priced on Add-ons now
   function sliderList(c, o) {
     const opts = gaugeOpts(c.data);
     let html = '';
@@ -4308,7 +4391,7 @@ GO.router = (function () {
     }
     return '<div class="cta-bar cta-bar--total cta-inline"><div class="cta-inline__total">' +
         '<div class="cta-inline__sum"><span class="t-label-lg total-info">Total<button type="button" class="total-info__btn" data-act="total" aria-label="Price details">' + GO.icon('info', 16) + '</button></span><span class="t-h2 nowrap" aria-live="polite">' + money2(sum + c.data.fee + refundSum(c.s)) + '</span></div>' +
-        '<div class="cta-inline__note"><button class="link t-caption c-tertiary" data-act="total" aria-label="Price details, incl. transaction fee">incl. transaction fee</button></div>' +
+        '<div class="cta-inline__note"><button class="link t-caption c-tertiary" data-act="total" aria-label="Price details, incl. booking fee">incl. booking fee</button></div>' +
       '</div><button class="btn btn--primary cta-inline__btn" data-act="' + act + '">' + label + '</button></div>';
   }
 
@@ -4559,7 +4642,7 @@ GO.router = (function () {
       : [['shuttle', 'You may share the ride with other passengers, with a few short stops on the way.'], drive, arrive]);
     items.push(['check-circle', 'Free cancellation within 24h of booking']);
     // the refund switched on in the Private card shows in What's included (user 17.11.2026)
-    if (priv && GO.store.get().refund) items.push(['check-circle', '<strong class="ride-strong">100% money refund</strong> if you cancel up to 48h before the transfer']);
+    if (false && priv) items.push(['check-circle', '<strong class="ride-strong">100% Money Refund</strong> if you cancel up to 48h before the transfer']);
     return '<ul class="check-list">' + items.map(i => checkItem(i[0], i[1])).join('') + '</ul>';
   }
   function rideOf(c, kind) {
@@ -4685,7 +4768,7 @@ GO.router = (function () {
       const lines = legs.map(l => ({ l, q: api.legSearch(c.s, l), o: pickedOf(l) })).filter(x => x.o);
       if (!lines.length) return sheetHead('Price details') + '<div class="sheet__body"><p class="t-body c-secondary">Choose a ride first</p></div>' + sheetFoot('Close');
       const fee = c.data ? c.data.fee : 3.2;
-      const refund = c.s.refund ? api.REFUND : 0;
+      const refund = 0; // chosen on Add-ons now (user 17.11.2026)
       const sum = lines.reduce((a, x) => a + x.o.total, 0) + fee + refund;
       const line = x => {
         const qty = x.o.kind === 'private' ? '1 vehicle' : paxLabel(c.s) + (x.o.pax > 1 ? ' × ' + money(x.o.unit) : '');
@@ -4695,7 +4778,7 @@ GO.router = (function () {
       return sheetHead('Price details', c.round ? routeLabel(api.legSearch(c.s, 'out')) + ' and back' : routeLabel(c.q) + ', ' + fmtDay(c.q.date)) +
         '<div class="sheet__body sheet__body--gap16">' +
           '<dl class="price-lines">' + lines.map(line).join('') +
-            (refund ? '<div class="price-line"><dt class="t-body">100% money refund</dt><dd class="t-body">' + money2(refund) + '</dd></div>' : '') +
+            (refund ? '<div class="price-line"><dt class="t-body">100% Money Refund</dt><dd class="t-body">' + money2(refund) + '</dd></div>' : '') +
             '<div class="price-line"><dt class="t-body">Booking fee</dt><dd class="t-body">' + money2(fee) + '</dd></div>' +
             '<div class="price-line price-line--total"><dt class="t-label-lg">Total</dt><dd class="t-h3">' + money2(sum) + '</dd></div>' +
           '</dl>' +
@@ -4748,12 +4831,17 @@ GO.router = (function () {
   }
 
   // ---------- price ----------
+  // 100% Money Refund (user 17.11.2026): 10% of all the picked transfers, shown per person
+  function refundPP(s, L) {
+    const pax = Math.max(1, s.adults + s.children);
+    return Math.ceil(L.reduce((a, l) => a + (l.o ? l.o.total : 0), 0) * 0.1 / pax - 1e-9); // rounded up to whole euros (user 17.11.2026)
+  }
   function totals(s, e, L) {
     const pax = s.adults + s.children;
     const transfer = L.reduce((a, l) => a + l.o.total, 0);
     const lines = [{ label: (L.length > 1 ? 'Transfers, ' : 'Transfer, ') + rides(L.length) + ', ' + paxLabel(s), value: transfer }];
     if (e.nw) lines.push({ label: 'No Worries package, ' + people(pax), value: api.NO_WORRIES * pax });
-    if (s.refund) lines.push({ label: '100% money refund', value: api.REFUND }); // chosen on Offers
+    if (s.refund) lines.push({ label: '100% Money Refund, ' + people(pax), value: refundPP(s, L) * pax }); // chosen on Add-ons
     const charged = L.filter(l => l.o.kind !== 'private').length; // private rides carry luggage for free
     api.LUGGAGE.forEach(item => {
       const n = e.lug[item.id];
@@ -4958,6 +5046,27 @@ GO.router = (function () {
     '<path d="M20.604 12.2909C20.604 17.5698 14.8459 21.4092 12.7509 22.6315C12.5128 22.7704 12.3937 22.8398 12.2257 22.8759C12.1605 22.8898 12.0803 22.8968 12.0002 22.8968V1.60931C12.0516 1.60931 12.103 1.613 12.154 1.62037C12.269 1.63699 12.3808 1.67891 12.6044 1.76276L18.3709 3.92518C19.176 4.2271 19.5785 4.37806 19.8752 4.63949C20.1372 4.87045 20.3391 5.16175 20.4634 5.48823C20.604 5.85779 20.604 6.28772 20.604 7.14757V12.2909Z" fill="#088079"/>' +
     '<path opacity=".5" d="M11.3884 20.7083C11.5824 20.8215 11.6794 20.878 11.8162 20.9074C11.9225 20.9302 12.0775 20.9302 12.1837 20.9074C12.3206 20.878 12.4176 20.8215 12.6115 20.7083C14.3184 19.7125 19.0094 16.5846 19.0094 12.2839V8.09361C19.0094 7.39309 19.0094 7.04283 18.8949 6.74175C18.7937 6.47577 18.6292 6.23844 18.4157 6.05028C18.174 5.83729 17.846 5.71431 17.1901 5.46834L12.4922 3.70661C12.31 3.6383 12.219 3.60415 12.1253 3.59061C12.0422 3.5786 11.9578 3.5786 11.8747 3.59061C11.781 3.60415 11.6899 3.6383 11.5077 3.70661L6.80979 5.46834C6.15388 5.71431 5.82592 5.83729 5.58423 6.05028C5.37073 6.23844 5.20626 6.47577 5.10505 6.74175C4.99048 7.04283 4.99048 7.39309 4.99048 8.09361V12.2839C4.99048 16.5846 9.68154 19.7125 11.3884 20.7083Z" fill="#fff" fill-opacity=".5"/>' +
     '<path d="M9.43994 11.6367L11.294 13.4907L15.4656 9.31909" stroke="#fff" stroke-width="1.39812" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  // 100% Money Refund at the top of Add-ons (user 17.11.2026; was in the Private card on Offers): the No Worries card,
+  // a teal coin-back icon, the price per person 10% of the picked transfers; the switch toggles it
+  const RF_ICON = '<svg class="nw__shield" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">' +
+    // two-tone as the No Worries shield (user 17.11.2026): the left half at 50%, the right half full, a lighter inner disc
+    '<circle cx="12" cy="12" r="10.5" fill="#088079" opacity=".5"/>' +
+    '<path d="M12 1.5a10.5 10.5 0 0 1 0 21z" fill="#088079"/>' +
+    '<circle cx="12" cy="12" r="8.6" fill="#fff" fill-opacity=".25"/>' +
+    '<path d="M8.5 9.5h5.25a2.75 2.75 0 0 1 0 5.5H10" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>' +
+    '<path d="M10.5 7.5 8.5 9.5l2 2" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  function refundCardEx(s, L) {
+    const pp = refundPP(s, L);
+    const num = String(pp);
+    return '<section class="nw nw--v5" aria-labelledby="rf-title">' +
+      '<div class="nw__top"><h2 id="rf-title" class="nw__title nw__title--kicker">' + RF_ICON + '<span class="nw__names"><span class="nw__kicker t-body-sm">Change of plans?</span><span class="t-h3">100% Money Refund</span></span></h2>' +
+        '<label for="rf-switch" class="offer__amount nw__price"><span class="offer__num">' + num + '</span><span class="offer__cur">€</span>' +
+          '<span class="vper" aria-hidden="true">/' + GO.icon('user', 16) + '</span><span class="sr-only">per person</span></label></div>' +
+      '<div class="nw__bottom"><p class="nw__promise c-secondary">Cancel up to 48h before the transfer and get all your money back.</p>' +
+        '<label class="nw__switch"><input id="rf-switch" type="checkbox" role="switch" data-act="refund" aria-label="100% Money Refund, ' + num + ' € per person"' + (s.refund ? ' checked' : '') + '>' +
+        '<span class="switch switch--lg" aria-hidden="true"></span></label></div>' +
+    '</section>';
+  }
   function noWorries(s, e) {
     const price = money(api.NO_WORRIES); // whole euros in the card, as the offers (Anya 16.11.2026)
     // v5 (Presentations New 05.11 679:1419): the title h3 and a big switch on the right, the promise with "Find out more" at its end.
@@ -5036,7 +5145,7 @@ GO.router = (function () {
   // v5: "Total" with "incl. transaction fee" under it on the left (opens the price details), the sum on the right; the same line on Details
   function totalLine(T) {
     return '<div class="total-line"><div class="total-line__label">' + '<span class="t-label-lg total-info">Total<button type="button" class="total-info__btn" data-act="total" aria-label="Price details">' + GO.icon('info', 16) + '</button></span>' +
-        '<button class="link t-caption c-tertiary total-line__fee" data-act="total" aria-label="Price details, incl. transaction fee">incl. transaction fee</button></div>' +
+        '<button class="link t-caption c-tertiary total-line__fee" data-act="total" aria-label="Price details, incl. booking fee">incl. booking fee</button></div>' +
       '<span class="t-h2 nowrap" aria-live="polite">' + money2(T.total) + '</span></div>';
   }
   GO.totalLine = totalLine;
@@ -5045,7 +5154,7 @@ GO.router = (function () {
   function totalBar(T) {
     return '<div class="cta-bar cta-bar--total cta-inline"><div class="cta-inline__total">' +
         '<div class="cta-inline__sum"><span class="t-label-lg total-info">Total<button type="button" class="total-info__btn" data-act="total" aria-label="Price details">' + GO.icon('info', 16) + '</button></span><span class="t-h2 nowrap" aria-live="polite">' + money2(T.total) + '</span></div>' +
-        '<div class="cta-inline__note"><button class="link t-caption c-tertiary" data-act="total" aria-label="Price details, incl. transaction fee">incl. transaction fee</button></div>' +
+        '<div class="cta-inline__note"><button class="link t-caption c-tertiary" data-act="total" aria-label="Price details, incl. booking fee">incl. booking fee</button></div>' +
       '</div><button class="btn btn--primary cta-inline__btn" data-act="continue">Continue</button></div>';
   }
 
@@ -5084,7 +5193,7 @@ GO.router = (function () {
         : (q.date ? esc(GO.whenLabel(q)) : ''), esc(paxLabel(s))], false); // no pencil on Add-ons and payment (user 12.11.2026)
   }
   GO.tripHead = tripHead;
-  function bookingHeadV5(s, L) { return tripHead(s, L) + GO.pageTitle('Select add-ons'); }
+  function bookingHeadV5(s, L) { return tripHead(s, L) + GO.pageTitle('Choose add-ons'); }
   function bookingHead(s, L) {
     const qs = L.length ? L.map(l => l.q) : [api.legSearch(s, 'out')];
     const q = qs[0], round = qs.length > 1, routeTitle = !(window.GO_SEED && GO_SEED.routeTitle === false), fixed = !!(window.GO_SEED && GO_SEED.routeTitle === 'open'), open = fixed || detailsOpen; // route as the title by default (user 05.11.2026, variant 2 of the variants page); false brings back "Booking details"; 'open' does not fold
@@ -5151,7 +5260,7 @@ GO.router = (function () {
           // v5 (user 06.11.2026): flight, Baggage, Child seat, No Worries last before the promo code (the money refund moved to Offers)
           // v6 (Mobile 09.11.2026 3249:10509): flight, No Worries, Baggage, Child seat (v5 had No Worries last)
           (GO.extrasBaggage() === 3
-            ? noWorries(s, e) + flightBlock(e, L) + luggage(e, L) + childSeats(s, e) // No Worries first (user 17.11.2026)
+            ? refundCardEx(s, L) + noWorries(s, e) + flightBlock(e, L) + luggage(e, L) + childSeats(s, e) // No Worries first (user 17.11.2026)
             : flightBlock(e, L) + noWorries(s, e) + luggage(e, L) + childSeats(s, e)) +
           totalBlock(promo(e, voucherErr, voucherBusy, v ? voucherText(e.voucher).replace('transfers', round ? 'your transfers' : 'your transfer') : ''), '' /* the invoice moved to Passenger info (user 17.11.2026) */, GO.extrasBaggage() === 3 ? T : null) +
         '</main>' + totalBar(T);
@@ -5205,6 +5314,7 @@ GO.router = (function () {
       },
       seats() { seatsRequired = false; GO.router.go('/extras/seats'); },
       nw() { setEx({ nw: !ex().nw }); refreshKeep('[data-act=nw]'); },
+      refund() { GO.store.set({ refund: !GO.store.get().refund }); refreshKeep('[data-act=refund]'); },
       'nw-more': () => GO.router.go('/extras/no-worries'),
       flight(el) { GO.store.set({ flightLeg: el.dataset.leg }); GO.router.go('/extras/flight'); },
       // "consider changing it" / "Change date" / "Are you sure?": the date and time screen, full screen; a new time needs
@@ -5376,10 +5486,11 @@ GO.router = (function () {
         '<button class="icon-btn" data-act="close" aria-label="Close">' + ic('close', 24) + '</button></header>' +
         '<form class="sheet__body invoice-sheet" data-manual-form novalidate>' +
           '<p class="t-body-sm c-secondary">' + esc(intro) + '</p>' +
-          '<div class="form-field"><label class="t-label" for="mf-code">Flight number</label>' +
-            '<div class="field"><input id="mf-code" name="code" value="' + esc(manualDraft.code) + '" autocomplete="off" autocapitalize="characters" spellcheck="false" enterkeyhint="next" placeholder="e.g. EZY5832"></div></div>' +
-          '<div class="form-field"><label class="t-label" for="mf-city">' + (dep ? 'Destination' : 'Departure from') + '</label>' +
-            '<div class="field"><input id="mf-city" name="city" value="' + esc(manualDraft.city) + '" autocomplete="off" autocapitalize="words" enterkeyhint="next" aria-describedby="mf-city-help"></div>' +
+          // labels inside the fields, as every other form (user 17.11.2026)
+          '<div class="form-field"><label class="sr-only" for="mf-code">Flight number</label>' +
+            '<div class="field"><input id="mf-code" name="code" value="' + esc(manualDraft.code) + '" autocomplete="off" autocapitalize="characters" spellcheck="false" enterkeyhint="next" placeholder="Flight number"></div></div>' +
+          '<div class="form-field"><label class="sr-only" for="mf-city">' + (dep ? 'Destination' : 'Departure from') + '</label>' +
+            '<div class="field"><input id="mf-city" name="city" value="' + esc(manualDraft.city) + '" autocomplete="off" autocapitalize="words" enterkeyhint="next" placeholder="' + (dep ? 'Destination' : 'Departure from') + '" aria-describedby="mf-city-help"></div>' +
             '<p id="mf-city-help" class="t-body-sm c-tertiary">City or airport your flight ' + (dep ? 'goes to' : 'comes from') + '</p></div>' +
           '<div class="time-field" role="group" aria-labelledby="mf-time">' +
             '<span id="mf-time" class="time-field__label t-label">' + timeLabel + '</span>' +
@@ -5425,7 +5536,7 @@ GO.router = (function () {
   };
 
   // ---------- sheet: invoice details (2253:124437 empty, 2253:124880 filled) ----------
-  // Labels above the fields, Save once the company name and address are there; VAT is optional.
+  // Floating labels inside the fields (GO.floatLabels), Save once the company name and address are there; VAT is optional.
   const INV_FIELDS = [
     ['company', 'Company name', 'e.g. Alpe Tours d.o.o.', 'autocomplete="organization"'],
     ['address', 'Company address', 'Street, city, postcode', 'autocomplete="street-address"'],
@@ -5444,15 +5555,16 @@ GO.router = (function () {
   GO.screens['extras-invoice'] = GO.screens['details-invoice'] = {
     overlay: true, base: () => GO.hash().startsWith('#/details') ? 'details' : 'extras', sheetClass: 'sheet--bottom',
     render() {
-      const inv = ex().invoice || {};
+      const inv = {}; // always opens empty; TEST DATA under a field fills Novak Travel (user 17.11.2026)
       return '<div class="sheet-handle" aria-hidden="true"></div>' +
         '<header class="sheet-header"><div class="sheet-header__titles"><h2 id="sheet-title" class="t-h1">Invoice details</h2></div>' +
         '<button class="icon-btn" data-act="close" aria-label="Close">' + ic('close', 24) + '</button></header>' +
         '<form class="sheet__body invoice-sheet" data-invoice-form novalidate>' +
           '<p class="t-body-sm c-secondary">We’ll email the invoice with your booking confirmation</p>' +
           INV_FIELDS.map(([k, label, ph, attrs], i) =>
-            '<div class="form-field"><label class="t-label" for="inv-' + k + '">' + label + '</label>' +
-            '<div class="field"><input id="inv-' + k + '" name="' + k + '" placeholder="' + ph + '" value="' + esc(inv[k] || '') + '" ' + attrs +
+            // floating label inside the field, as in every other form (user 17.11.2026; was a label above + an example inside)
+            '<div class="form-field"><label class="sr-only" for="inv-' + k + '">' + label + '</label>' +
+            '<div class="field"><input id="inv-' + k + '" name="' + k + '" placeholder="' + label + '" value="' + esc(inv[k] || '') + '" ' + attrs +
             ' enterkeyhint="' + (i < INV_FIELDS.length - 1 ? 'next' : 'done') + '"></div></div>').join('') +
         '</form>' +
         '<div class="cta-bar"><button class="btn btn--primary" data-act="invoice-save">Confirm</button></div>'; // always active, says what is missing (user 17.11.2026)
@@ -5817,7 +5929,7 @@ GO.router = (function () {
         '<div class="account__acts">' +
           // Google as a pill with the logo and "Log in" too (user 17.11.2026; was the logo alone in a circle)
           '<button class="account__login t-label" data-act="login">' + ic('mail', 16) + 'Log in</button>' +
-          '<button class="account__login t-label" data-act="social" data-p="Google" aria-label="Log in with Google">' + GO.LOGO_GOOGLE + 'Log in</button>' +
+          '<button class="account__login t-label" data-act="social" data-p="Google" aria-label="Log in with Google">' + GO.LOGO_GOOGLE + '</button>' +
         '</div>' +
       '</div>' +
     '</section>';
@@ -5880,10 +5992,10 @@ GO.router = (function () {
       // no visible title (Anya 16.11.2026): the route header says where we are; the h1 stays for screen readers
       // the title as on Add-ons; Log in and Google on its line, no "Booked with us before?" (user 17.11.2026)
       const loggedIn = !!contact().account;
-      const head = GO.tripHead(s, L) + (loggedIn ? GO.pageTitle('Add passenger info')
-        : '<div class="details__head">' + GO.pageTitle('Add passenger info') + '<div class="account__acts">' +
+      const head = GO.tripHead(s, L) + (loggedIn ? GO.pageTitle('Passenger details')
+        : '<div class="details__head">' + GO.pageTitle('Passenger details') + '<div class="account__acts">' +
             '<button class="account__login t-label" data-act="login">' + ic('mail', 16) + 'Log in</button>' +
-            '<button class="account__login t-label" data-act="social" data-p="Google" aria-label="Log in with Google">' + GO.LOGO_GOOGLE + 'Log in</button>' +
+            '<button class="account__login t-label" data-act="social" data-p="Google" aria-label="Log in with Google">' + GO.LOGO_GOOGLE + '</button>' +
           '</div></div>');
       if (!L.length || L.some(l => !l.o)) {
         return head + GO.noRide(s);
@@ -6098,7 +6210,8 @@ GO.router = (function () {
   const fromHome = () => area() !== 'details'; // home and confirmation: back with a toast, no form to fill
   const route = step => area() === 'home' ? { signin: '/signin', code: '/signin/code', choose: '/signin/choose', profile: '/signin/profile' }[step] : '/' + area() + '/' + step;
 
-  const closeBtn = '<button class="icon-btn auth-dialog__close" data-act="close" aria-label="Close">' + ic('close', 24) + '</button>';
+  // the login steps as bottom sheets (user 17.11.2026; were popups in the middle of the screen)
+  const closeBtn = '<div class="sheet-handle" aria-hidden="true"></div><button class="icon-btn auth-dialog__close" data-act="close" aria-label="Close">' + ic('close', 24) + '</button>';
   // Errors are patched in place, like on Details: a re-render would drop the keyboard
   function setFieldError(box, input, msg) {
     box.classList.toggle('field--error', !!msg);
@@ -6118,7 +6231,7 @@ GO.router = (function () {
   const legal = '<p class="auth__legal c-secondary"><span>By continuing, you accept the GoOpti <button type="button" class="link link--inline auth__legal-link" data-act="terms">Terms and Conditions</button> <span class="nowrap">and <button type="button" class="link link--inline auth__legal-link" data-act="terms">Privacy Policy</button></span></span></p>'; // "and" never hangs at the line end (user 21.10.2026)
 
   const emailScreen = {
-    overlay: true, base: area, sheetClass: 'sheet--dialog',
+    overlay: true, base: area, sheetClass: 'sheet--bottom sheet--auth',
     render() {
       const value = loginEmail || contact().email || '';
       return closeBtn +
@@ -6178,7 +6291,7 @@ GO.router = (function () {
     if (box) setFieldError(box, document.getElementById('login-code'), msg);
   }
   const codeScreen = {
-    overlay: true, base: area, sheetClass: 'sheet--dialog',
+    overlay: true, base: area, sheetClass: 'sheet--bottom sheet--auth',
     render() {
       const cells = [...Array(OTP_LEN).keys()].map(i => '<input class="otp__cell" id="' + (i ? 'login-code-' + i : 'login-code') + '" inputmode="numeric" maxlength="' + OTP_LEN + '" aria-label="Digit ' + (i + 1) + '"' +
         (i ? ' autocomplete="off"' : ' autocomplete="one-time-code"') + '>').join('');
@@ -6278,7 +6391,7 @@ GO.router = (function () {
   }
   GO.openProfile = (a, email, google) => { prof = makeProf(a, email, google); profErr = ''; GO.router.go(route('profile')); };
   const profileScreen = {
-    overlay: true, base: area, sheetClass: 'sheet--dialog',
+    overlay: true, base: area, sheetClass: 'sheet--bottom sheet--auth',
     render() {
       if (!prof) return closeBtn;
       const p = prof, cur = country(p.cc);
@@ -6355,7 +6468,7 @@ GO.router = (function () {
   // Log in as (Anya's desktop 22.10.2026): an account linked to a company picks who the booking is for.
   // After the code it replaces the code step; on Details "Switch account" opens it again.
   const chooseScreen = {
-    overlay: true, base: area, sheetClass: 'sheet--dialog',
+    overlay: true, base: area, sheetClass: 'sheet--bottom sheet--auth',
     render() {
       const a = pending || COMPANY_ACCOUNT;
       const opt = (act, icon, name, detail) => '<li><button class="place-option auth__acc" data-act="as" data-as="' + act + '">' +
@@ -6616,7 +6729,7 @@ GO.router = (function () {
     const err = errors[key];
     const ids = [err ? key + '-err' : '', helper ? key + '-help' : ''].filter(Boolean).join(' ');
     return '<div class="form-field">' +
-      '<label class="t-label" for="p-' + key + '">' + label + '</label>' +
+      '<label class="sr-only" for="p-' + key + '">' + label + '</label>' + // inside the field, as every other form (user 17.11.2026)
       '<div class="field' + (err ? ' field--error' : '') + '"><input id="p-' + key + '" name="' + key + '" value="' + esc(pay[key]) + '" ' + attrs +
         (err ? ' aria-invalid="true"' : '') + (ids ? ' aria-describedby="' + ids + '"' : '') + '></div>' +
       (err ? '<p id="' + key + '-err" class="t-body-sm field-error">' + esc(err) + '</p>' : '') +
@@ -6628,10 +6741,10 @@ GO.router = (function () {
   function cardFields() {
     const amex = brand(digits(pay.number)) === 'American Express';
     return '<div class="card-fields">' +
-      field('number', 'Card number', 'inputmode="numeric" autocomplete="cc-number" enterkeyhint="next" placeholder="1234 5678 9012 3456"') +
+      field('number', 'Card number', 'inputmode="numeric" autocomplete="cc-number" enterkeyhint="next" placeholder="Card number"') +
       '<div class="card-fields__row">' +
-        field('exp', 'Expiry date', 'inputmode="numeric" autocomplete="cc-exp" enterkeyhint="next" placeholder="MM / YY"') +
-        field('cvc', 'Security code', 'type="password" inputmode="numeric" autocomplete="cc-csc" enterkeyhint="done" placeholder="' + (amex ? '4 digits' : '3 digits') + '"') +
+        field('exp', 'Expiry date', 'inputmode="numeric" autocomplete="cc-exp" enterkeyhint="next" placeholder="Expiry date"') +
+        field('cvc', 'Security code (CVV)', 'type="password" inputmode="numeric" autocomplete="cc-csc" enterkeyhint="done" placeholder="Security code (CVV)"') +
       '</div>' +
     '</div>';
   }
@@ -6672,7 +6785,7 @@ GO.router = (function () {
   function totalLine(T) {
     return '<div class="cta-inline__total pay-total">' +
         '<div class="cta-inline__sum"><span class="t-label-lg total-info">Total<button type="button" class="total-info__btn" data-act="total" aria-label="Price details">' + GO.icon('info', 16) + '</button></span><span class="t-h2 nowrap">' + B.money2(T.total) + '</span></div>' +
-        '<div class="cta-inline__note"><button class="link t-caption c-tertiary" data-act="total" aria-label="Price details, incl. transaction fee">incl. transaction fee</button></div>' +
+        '<div class="cta-inline__note"><button class="link t-caption c-tertiary" data-act="total" aria-label="Price details, incl. booking fee">incl. booking fee</button></div>' +
       '</div>';
   }
   // ---------- v5 ----------
@@ -6917,7 +7030,7 @@ GO.router = (function () {
     const n = digits(pay.number);
     const items = [L.length + (L.length > 1 ? ' transfers' : ' transfer')];
     if (e.nw) items.push('No Worries package');
-    if (s.refund) items.push('100% money refund');
+    if (s.refund) items.push('100% Money Refund');
     const LUG_SHORT = { trolley: 'trolley', s20: '20 kg suitcase', s32: '32 kg suitcase', special: 'special item' };
     GO.api.LUGGAGE.forEach(i => { const k = e.lug[i.id]; if (k) items.push(k + ' ' + LUG_SHORT[i.id] + (k > 1 ? 's' : '')); });
     if (e.voucher) items.push('promo code ' + e.voucher.code);
@@ -7312,4 +7425,92 @@ GO.router = (function () {
 </script>
 
 
+<script>
+// Tweaks (host panel): three feel-level switches over the tokens — shape, density, brand palette.
+// The outer page (phone frame) shows the panel and restyles the app inside the iframe; the app reads the same defaults.
+const GO_TWEAKS = /*EDITMODE-BEGIN*/{
+  "shape": "Classic",
+  "density": "Regular",
+  "palette": ["#ed3180", "#088079"]
+}/*EDITMODE-END*/;
+(function () {
+  const SHAPES = { Soft: [6, 12, 18, 24], Classic: [4, 8, 12, 16], Sharp: [2, 3, 4, 6] };
+  const DENS = { Compact: [12, 12, 16, 24, 48, 44, 32], Regular: [16, 16, 24, 32, 56, 48, 36], Airy: [20, 20, 32, 44, 60, 52, 40] };
+  const PALETTES = [['#ed3180', '#088079'], ['#2456d6', '#0f8a5f'], ['#e2561b', '#1f6f8b'], ['#1d1d1f', '#5b6bd6']];
+  let t = Object.assign({}, GO_TWEAKS);
+  function css(v) {
+    const r = SHAPES[v.shape] || SHAPES.Classic, d = DENS[v.density] || DENS.Regular;
+    const [a, s] = v.palette || PALETTES[0];
+    const mix = (c, w, pct) => 'color-mix(in oklch, ' + c + ' ' + pct + '%, ' + w + ')';
+    return ':root{' +
+      '--radius-xs:' + r[0] + 'px;--radius-sm:' + r[1] + 'px;--radius-md:' + r[2] + 'px;--radius-lg:' + r[3] + 'px;' +
+      '--layout-page-margin:' + d[0] + 'px;--layout-card-padding:' + d[1] + 'px;--layout-block-gap:' + d[2] + 'px;--layout-section-gap:' + d[3] + 'px;' +
+      '--control-h-lg:' + d[4] + 'px;--control-h-md:' + d[5] + 'px;--control-h-sm:' + d[6] + 'px;' +
+      '--color-action-primary:' + a + ';--primary-500:' + a + ';--primary-600:' + mix(a, 'black', 88) + ';--primary-700:' + mix(a, 'black', 72) + ';' +
+      '--color-action-primary-hover:' + mix(a, 'black', 88) + ';--color-action-primary-pressed:' + mix(a, 'black', 72) + ';' +
+      '--primary-50:' + mix(a, 'white', 6) + ';--primary-100:' + mix(a, 'white', 12) + ';' +
+      '--secondary-600:' + s + ';--color-action-success:' + s + ';--secondary-700:' + mix(s, 'black', 82) + ';' +
+      '--secondary-50:' + mix(s, 'white', 7) + ';--secondary-100:' + mix(s, 'white', 14) + ';--secondary-200:' + mix(s, 'white', 32) + ';--secondary-300:' + mix(s, 'white', 52) + ';--secondary-500:' + mix(s, 'white', 82) + ';}' +
+      '.nw__shield [fill="#088079"]{fill:' + s + '}';
+  }
+  function apply(doc, v) {
+    if (!doc || !doc.head) return;
+    let st = doc.getElementById('go-tweaks');
+    if (!st) { st = doc.createElement('style'); st.id = 'go-tweaks'; doc.head.appendChild(st); }
+    st.textContent = css(v);
+  }
+  const frameDoc = () => { const f = document.querySelector('.stage__phone iframe'); try { return f && f.contentDocument; } catch (e) { return null; } };
+  const applyAll = () => { apply(document, t); apply(frameDoc(), t); };
+  applyAll();
+  if (GO.frame === 'inner') return; // the app in the phone: the outer page owns the panel
+  const f = document.querySelector('.stage__phone iframe');
+  if (f) f.addEventListener('load', () => apply(f.contentDocument, t));
+
+  const panel = document.createElement('div');
+  panel.className = 'go-tw';
+  panel.hidden = true;
+  const st = document.createElement('style');
+  st.textContent = '.go-tw{position:fixed;right:16px;bottom:16px;z-index:9999;width:260px;padding:14px 16px 16px;border-radius:14px;background:#fff;color:#1d1d1f;box-shadow:0 4px 12px rgba(0,0,0,.08),0 16px 40px rgba(0,0,0,.16);font:14px/20px var(--font-family,system-ui);display:flex;flex-direction:column;gap:14px}' +
+    '.go-tw[hidden]{display:none}.go-tw__head{display:flex;justify-content:space-between;align-items:center;font-weight:600}' +
+    '.go-tw__x{border:0;background:none;font-size:18px;line-height:1;cursor:pointer;color:#6b6b6b;width:28px;height:28px;border-radius:8px}.go-tw__x:hover{background:#f5f5f5}' +
+    '.go-tw__row{display:flex;flex-direction:column;gap:6px}.go-tw__lab{font-size:12px;line-height:16px;color:#6b6b6b}' +
+    '.go-tw__seg{display:flex;padding:2px;border-radius:10px;background:#ededed}.go-tw__seg button{flex:1;border:0;background:none;padding:6px 0;border-radius:8px;font:inherit;font-size:13px;cursor:pointer;color:#3e3e3e}' +
+    '.go-tw__seg button[aria-pressed=true]{background:#fff;color:#1d1d1f;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.08)}' +
+    '.go-tw__sw{display:flex;gap:8px}.go-tw__sw button{flex:1;height:32px;border:2px solid transparent;border-radius:9px;cursor:pointer;display:flex;overflow:hidden;padding:0}' +
+    '.go-tw__sw button span{flex:1}.go-tw__sw button[aria-pressed=true]{border-color:#1d1d1f}' +
+    '.go-tw button:focus-visible{outline:2px solid #1d1d1f;outline-offset:2px}';
+  document.head.appendChild(st);
+  function seg(key, label, opts) {
+    return '<div class="go-tw__row"><span class="go-tw__lab">' + label + '</span><div class="go-tw__seg">' +
+      opts.map(o => '<button type="button" data-k="' + key + '" data-v="' + o + '" aria-pressed="' + (t[key] === o) + '">' + o + '</button>').join('') + '</div></div>';
+  }
+  function render() {
+    const cur = JSON.stringify(t.palette);
+    panel.innerHTML = '<div class="go-tw__head"><span>Tweaks</span><button type="button" class="go-tw__x" aria-label="Close tweaks">×</button></div>' +
+      seg('shape', 'Shape', Object.keys(SHAPES)) + seg('density', 'Density', Object.keys(DENS)) +
+      '<div class="go-tw__row"><span class="go-tw__lab">Brand palette · action / reassurance</span><div class="go-tw__sw">' +
+      PALETTES.map((pl, i) => '<button type="button" data-pal="' + i + '" aria-label="Palette ' + (i + 1) + '" aria-pressed="' + (JSON.stringify(pl) === cur) + '"><span style="background:' + pl[0] + '"></span><span style="background:' + pl[1] + '"></span></button>').join('') +
+      '</div></div>';
+  }
+  function set(edits) {
+    Object.assign(t, edits);
+    applyAll(); render();
+    window.parent.postMessage({ type: '__edit_mode_set_keys', edits }, '*');
+  }
+  panel.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    if (b.classList.contains('go-tw__x')) { panel.hidden = true; window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*'); return; }
+    if (b.dataset.k) set({ [b.dataset.k]: b.dataset.v });
+    if (b.dataset.pal) set({ palette: PALETTES[+b.dataset.pal] });
+  });
+  render();
+  document.body.appendChild(panel);
+  addEventListener('message', e => {
+    const ty = e.data && e.data.type;
+    if (ty === '__activate_edit_mode') panel.hidden = false;
+    else if (ty === '__deactivate_edit_mode') panel.hidden = true;
+  });
+  window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+})();
+</script>
 </body></html>
