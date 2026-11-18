@@ -1573,6 +1573,9 @@ input:checked + .switch--lg::after { transform: translateX(20px); }
 .debug-panel__row .btn { padding: var(--space-8) var(--space-4); font-size: var(--font-size-label); }
 .debug-panel__row .btn[aria-pressed="true"] { background: var(--color-bg-success-subtle); }
 
+/* keyboard up on Passenger details / card fields: what is under the form fades out (user 18.11.2026) */
+.kb-calm { visibility: hidden; opacity: 0; transition: opacity .15s, visibility 0s .15s; }
+@media (prefers-reduced-motion: reduce) { .kb-calm { transition: none; } }
 /* TEST DATA under a focused field (as in Anya's desktop, 21.10.2026): a helper, not part of the design, so plain grey and monospace */
 .td { position: fixed; z-index: 1001; padding: 4px 0; background: #f3f3f3; border: 1px dashed #b5b5b5; font: 12px/16px ui-monospace, SFMono-Regular, Menlo, monospace; color: #444; }
 .td__head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 4px 8px; font-size: 10px; line-height: 12px; letter-spacing: .08em; color: #999; }
@@ -7741,6 +7744,41 @@ const GO_TWEAKS = /*EDITMODE-BEGIN*/{
     else if (ty === '__deactivate_edit_mode') panel.hidden = true;
   });
   window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+})();
+</script>
+<script>
+// Calm form while typing (user 18.11.2026): with the keyboard up on Passenger details, everything under the block being filled
+// (Total, Revolut / Apple / Google Pay) fades out, so nothing shows through the iOS AutoFill bar. In the card fields the same
+// happens under the card fields. visibility keeps the layout, so the page doesn't jump; it all comes back when the field loses focus.
+(function () {
+  const TYPING = /^(text|email|tel|number|password|search|url)$/;
+  let hidden = [];
+  function clear() { hidden.forEach(n => n.classList.remove('kb-calm')); hidden = []; }
+  function calm(input) {
+    clear();
+    const main = input.closest('main.details');
+    if (!main) return;
+    let start = input.closest('.card-fields');
+    if (!start) { start = input; while (start.parentElement !== main) start = start.parentElement; }
+    for (let n = start; n && n !== document.body; n = n.parentElement) {
+      for (let s = n.nextElementSibling; s; s = s.nextElementSibling) {
+        if (s.matches('script, style, .td, .sheet-layer')) continue;
+        s.classList.add('kb-calm'); hidden.push(s);
+      }
+      if (n === main) break;
+    }
+    // the bar under the page (sticky totals) too
+    document.querySelectorAll('.cta-bar').forEach(b => { if (!b.closest('.sheet')) { b.classList.add('kb-calm'); hidden.push(b); } });
+  }
+  document.addEventListener('focusin', e => {
+    const el = e.target;
+    if (el instanceof HTMLInputElement && TYPING.test(el.type || 'text')) calm(el); else if (el instanceof HTMLTextAreaElement) calm(el); else clear();
+  });
+  document.addEventListener('focusout', () => setTimeout(() => {
+    const a = document.activeElement;
+    if (!(a instanceof HTMLInputElement || a instanceof HTMLTextAreaElement) || !a.closest('main.details')) clear();
+  }, 0));
+  addEventListener('hashchange', clear);
 })();
 </script>
 </body></html>
