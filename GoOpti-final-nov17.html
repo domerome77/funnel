@@ -324,7 +324,16 @@ html.has-kb .sheet-layer { height: calc(var(--vvh, 100%) - var(--kb)); }
 .ride-sum__mid .icon { color: var(--color-text-tertiary); }
 .ride-sum__flex { font-weight: 600; color: var(--color-text-success); }
 .ride-sum__price { align-self: flex-end; }
-.ride-sheet .check-list { gap: var(--space-16); }
+.ride-sheet .check-list { gap: var(--space-20); }
+/* full-screen ride details, larger and airier for reading (user 18.11.2026) */
+.sheet--ride .sheet-header { padding-left: var(--space-24); padding-right: var(--space-16); }
+.sheet--ride .sheet-header .t-body-sm { font-size: var(--font-size-body-lg, 18px); line-height: 1.45; margin-top: var(--space-4); }
+.sheet--ride .sheet__body { padding: var(--space-16) var(--space-24) var(--space-24); }
+.sheet--ride .ride-sheet { gap: var(--space-24); }
+.sheet--ride .check-item { gap: var(--space-16); }
+.sheet--ride .check-item > svg { width: 24px; height: 24px; margin-top: 2px; }
+.sheet--ride .check-item .t-body-sm { font-size: var(--font-size-body-lg, 18px); line-height: 1.55; }
+.sheet--ride .cta-bar { padding-left: var(--space-24); padding-right: var(--space-24); }
 .ride-sheet .check-item .t-body-sm { font-size: var(--font-size-body); line-height: var(--line-height-body); }
 .check-item { display: flex; align-items: flex-start; gap: var(--space-8); }
 .check-item > .icon { flex-shrink: 0; }
@@ -890,7 +899,7 @@ html.has-kb .sheet-layer { height: calc(var(--vvh, 100%) - var(--kb)); }
   background: var(--color-bg-page);
   border: 1px solid var(--color-border-subtle); border-radius: var(--radius-lg);
 }
-.offer.is-selected { background: var(--color-bg-success-subtle); border: 2px solid var(--color-border-success); padding: calc(var(--layout-card-padding) - 1px); }
+.offer.is-selected { background: #e9f3f3; border: 2px solid var(--color-border-success); padding: calc(var(--layout-card-padding) - 1px); }
 .offer__hit { position: absolute; inset: -1px; border-radius: var(--radius-lg); z-index: 0; }
 .offer__hit:focus-visible { outline: 2px solid var(--color-focus-ring); outline-offset: 2px; }
 @media (hover: hover) { .offer:not(.is-selected):not(.is-off):hover { border-color: var(--color-border-input); } }
@@ -957,7 +966,7 @@ html.has-kb .sheet-layer { height: calc(var(--vvh, 100%) - var(--kb)); }
 .trust-card {
   display: flex; flex-direction: column; gap: var(--space-12);
   padding: var(--layout-card-padding);
-  background: var(--color-bg-subtle); border-radius: var(--radius-lg); /* grey: sand reads as a warning (16.11.2026, back from a sand try the same day) */
+  background: none; border-radius: 0; /* no grey block: only the two product cards read as choices (user 18.11.2026) */
 }
 
 /* Add your house number (2320:29071): street with a live chip, small number field, map placeholder */
@@ -1238,6 +1247,10 @@ ul.place-list { list-style: none; }
 .offer .refund--in { pointer-events: auto; z-index: 1; }
 .refund--in:has(input:focus-visible) { outline: 2px solid var(--color-focus-ring); outline-offset: 4px; border-radius: var(--radius-md); }
 .flight-add__sub { line-height: 18px; }
+.flight-add__rec { font-size: 12px; line-height: 16px; font-weight: 600; padding: 2px var(--space-8); margin-left: var(--space-4); }
+.lug-sum { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: var(--space-8); row-gap: 2px; margin-top: 2px; line-height: 20px; }
+.lug-sum__n { text-align: right; font-weight: 600; color: var(--color-text-primary); font-variant-numeric: tabular-nums; }
+.lug-sum__free { color: var(--color-text-success); }
 /* No Worries (Mobile 09.11.2026 3249:10509, user 09.11.2026): a white card with a thin border as Baggage / Child seat, radius 16, 12 / 16 / 16;
    the title and the price on top, the promise and the switch under them, 12 apart; picked - the switch turns green, the card stays */
 /* Mobile 11.11.2026 (approved, 3323:21328): mint #d8f0ee at 50% (= secondary-50), no border, 12 / 16 / 16 / 16, the shield before
@@ -1283,6 +1296,8 @@ input:checked + .switch--lg::after { transform: translateX(20px); }
 /* a small info icon after Total, opens the price details (user 17.11.2026) */
 /* "incl. transaction fee" lighter (user 17.11.2026) */
 .cta-inline__note .link, .total-line__fee { color: var(--neutral-500); }
+/* the whole Total area opens the summary, not only the (i) (user 18.11.2026) */
+.cta-inline__total[data-act], .total-line[data-act] { cursor: pointer; }
 .total-info { display: inline-flex; align-items: center; gap: var(--space-4); }
 .total-info__btn { position: relative; display: inline-flex; color: var(--color-text-tertiary); }
 .total-info__btn::after { content: ''; position: absolute; inset: -14px; }
@@ -1560,7 +1575,9 @@ input:checked + .switch--lg::after { transform: translateX(20px); }
 
 /* TEST DATA under a focused field (as in Anya's desktop, 21.10.2026): a helper, not part of the design, so plain grey and monospace */
 .td { position: fixed; z-index: 1001; padding: 4px 0; background: #f3f3f3; border: 1px dashed #b5b5b5; font: 12px/16px ui-monospace, SFMono-Regular, Menlo, monospace; color: #444; }
-.td__head { padding: 4px 8px; font-size: 10px; line-height: 12px; letter-spacing: .08em; color: #999; }
+.td__head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 4px 8px; font-size: 10px; line-height: 12px; letter-spacing: .08em; color: #999; }
+.td__hide { padding: 2px 6px; margin: -2px -4px -2px 0; background: none; border: 0; font: inherit; letter-spacing: .04em; color: #666; text-decoration: underline; cursor: pointer; }
+.td__hide:hover { color: #222; }
 .td__opt { display: block; width: 100%; min-height: 32px; padding: 6px 8px; text-align: left; font: inherit; color: inherit; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .td__opt:hover { background: #e6e6e6; }
 .td__note { color: #999; }
@@ -1670,6 +1687,15 @@ input:checked + .switch--lg::after { transform: translateX(20px); }
 .route-top__route { font-size: var(--font-size-label-lg); line-height: 20px; font-weight: 600; text-wrap: balance; }
 .route-top__meta { text-wrap: balance; }
 .route-top__edit .icon { color: var(--color-icon-muted); }
+.route-top .offers-header { position: relative; }
+/* bigger hit zones for Back and the pencil (user 18.11.2026): the full header height, 56 wide; the icons stay where they were */
+.route-top .offers-header { align-items: stretch; }
+.route-top .offers-header > .icon-btn { width: 56px; min-width: 56px; height: auto; min-height: 56px; align-self: stretch; }
+.route-top .offers-header > .icon-btn:first-child { margin-left: -4px; }
+.route-top .offers-header > .route-top__edit { margin-right: -4px; }
+.route-top .offers-header > .search-summary { align-self: center; }
+.route-zones { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(3, 1fr); z-index: 2; }
+.route-zones__z { background: none; border: 0; padding: 0; cursor: pointer; }
 .route-top__spacer { width: 44px; height: 44px; flex-shrink: 0; } /* in place of the pencil on Add-ons and payment: the route stays centred */
 /* the screen title under it on white: 22 bold, 16 / 16 / 4 */
 .page-title { padding: var(--space-16) var(--layout-page-margin) var(--space-4); }
@@ -1817,6 +1843,28 @@ input:checked + .switch--lg::after { transform: translateX(20px); }
 /* the step over the screen title: where you are in the three steps */
 .page-step { display: block; margin-bottom: 2px; font-weight: 400; color: var(--color-text-tertiary); }
 .details__head { align-items: flex-end; }
+/* (i) by the step title: opens the booking summary, the Total (i) bigger (user 18.11.2026) */
+.page-info { position: relative; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; margin-bottom: 2px; color: var(--color-text-tertiary); background: none; border: 0; padding: 0; cursor: pointer; }
+.page-info::after { content: ''; position: absolute; inset: -6px; }
+@media (hover: hover) { .page-info:hover { color: var(--color-text-primary); } }
+.page-info:focus-visible { outline: 2px solid var(--color-focus-ring); outline-offset: 2px; border-radius: 50%; }
+.details__head .account__acts { align-items: center; }
+/* Booking summary */
+.bsum { gap: var(--space-20); } /* more compact (user 18.11.2026) */
+.bsum__sec { display: flex; flex-direction: column; gap: 6px; padding-top: var(--space-16); border-top: 1px solid var(--color-border-subtle); }
+.bsum__sec:first-child { padding-top: 0; border-top: 0; }
+.bsum__kicker { color: var(--color-text-tertiary); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; font-size: 12px; }
+.bsum__route { margin-bottom: 2px; }
+.bsum .bsum__row .t-body, .bsum > .bsum__sec > p.t-body { font-size: 15px; line-height: 22px; }
+.bsum__rows { display: flex; flex-direction: column; gap: 6px; margin: 0; }
+.bsum__row { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-16); }
+.bsum__row dt { color: var(--color-text-secondary); min-width: 0; }
+.bsum__row dd { margin: 0; text-align: right; white-space: nowrap; color: var(--color-text-primary); }
+.bsum__row--strong dt, .bsum__row--strong dd { font-weight: 600; color: var(--color-text-primary); }
+.bsum__flight { display: inline-flex; align-items: center; gap: 6px; }
+.bsum__check { display: inline-flex; align-self: center; --verdict-ok: var(--color-text-success); --verdict-warn: #a87000; --verdict-error: #d1220a; }
+.bsum__check .icon { flex-shrink: 0; color: inherit; }
+.bsum__total { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-16); padding-top: var(--space-8); }
 /* the refund says its price */
 .refund__price { flex-shrink: 0; font-weight: 600; color: var(--color-text-primary); }
 /* contrast (AA 4.5:1 for text): the quiet checkbox labels and the header log-in links #858585 (3.7:1) -> #6b6b6b (5.3:1);
@@ -1834,6 +1882,7 @@ input:checked + .switch--lg::after { transform: translateX(20px); }
 .vper { color: var(--neutral-600); }
 .vper .icon { color: var(--neutral-500); }
 </style>
+
 </head>
 <body>
 
@@ -2299,8 +2348,13 @@ GO.routeHead = function (route, meta, editLabel) {
       '<p class="route-top__meta t-caption c-secondary">' + meta.filter(Boolean).join('<span aria-hidden="true"> · </span>') + '</p>' +
     '</div></div>' +
     // editLabel false: no pencil (Add-ons and payment, user 12.11.2026 - the search is changed on Offers), an empty box keeps the route centred
-    (editLabel === false ? '<span class="route-top__spacer" aria-hidden="true"></span>'
+    (editLabel === 'summary' ? '<button class="icon-btn route-top__edit" data-act="total" aria-label="Booking summary">' + ic('chevron-down', 24) + '</button>' // Add-ons and payment: the booking summary in place of the pencil (user 18.11.2026)
+      : editLabel === false ? '<span class="route-top__spacer" aria-hidden="true"></span>'
       : '<button class="icon-btn route-top__edit" data-act="edit" aria-label="' + esc(editLabel || 'Change date and time') + '">' + ic('edit', 20) + '</button>') +
+    // three equal invisible hit zones over the header (user 18.11.2026): the left third goes back, the middle and right thirds open the summary
+    (editLabel === 'summary' ? '<div class="route-zones"><button type="button" class="route-zones__z" data-act="back" tabindex="-1" aria-hidden="true"></button>' +
+      '<button type="button" class="route-zones__z" data-act="total" tabindex="-1" aria-hidden="true"></button>' +
+      '<button type="button" class="route-zones__z" data-act="total" tabindex="-1" aria-hidden="true"></button></div>' : '') +
   '</header></div>';
 };
 // the screen title under the route header (22 bold, 16 / 16 / 4)
@@ -3029,7 +3083,7 @@ GO.router = (function () {
     const need = sheet.offsetHeight;
     sheet.style.maxHeight = '';
     const safeTop = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--safe-top')) || 0;
-    const full = need > layer.clientHeight - safeTop - 24;
+    const full = sheet.classList.contains('sheet--ride') || need > layer.clientHeight - safeTop - 24; // ride details always open full screen (user 18.11.2026)
     sheet.classList.toggle('sheet--full', full);
     if (!sheet.dataset.fitWatch) {
       sheet.dataset.fitWatch = '1';
@@ -3827,17 +3881,26 @@ GO.router = (function () {
     return { tone: 'red', level: 'error', emoji: 'zone-error', text, action: 'Choose an earlier time.', preset: true };
   }
   window.GO_dropZone = dropZone;
+  // pick-up zones after landing, as the drop-off ones (user 18.11.2026): before landing doesn't fit, under 45 min red,
+  // 45 min to 1h 30 green, over 1h 30 red - nobody waits hours at the airport
+  function pickZone(g) {
+    if (g < 0) return { tone: 'red', level: 'error', emoji: 'zone-error', text: 'Your pick-up is before your flight lands.', action: 'Choose a later time.', preset: true };
+    const text = 'Your pick-up is ' + durText(g) + ' after your flight lands.';
+    if (g < 45) return { tone: 'red', level: 'error', emoji: 'zone-error', text, action: 'Choose a later time.', preset: true };
+    if (g <= 90) return { tone: 'green', level: 'ok', emoji: 'zone-ok', text, action: 'Great!' };
+    return { tone: 'red', level: 'error', emoji: 'zone-error', text, action: 'Choose an earlier time.', preset: true };
+  }
+  window.GO_pickZone = pickZone;
   // return from the airport with the landing known: pick-up after it
   function fixedArrNote() {
     const r = result(), g = flightGap();
     if (!r || g == null) return '';
-    const at = 'Pick-up at the airport at ' + r.time, x = { extra: flightLine() };
-    if (g < 0) return hint('🏃🏻', at, u.fmtDur(-g) + ' before your flight lands. Choose a later time.', Object.assign(x, { tone: 'red' }));
-    // zones as Anya's (23.10.2026): 45m and more fine, 30m tight, less too short
-    const text = 'We’ll take you from the airport ' + (g ? u.fmtDur(g) + ' after your flight lands' : 'when your flight lands');
-    if (g >= AFTER_LANDING) return hint('🙂', at, text, Object.assign(x, { tone: 'green' }));
-    if (g >= 30) return hint('😑', at, text + '. It can get tight with checked bags or a passport queue.', Object.assign(x, { tone: 'yellow' }));
-    return hint('🏃🏻', at, text + '. You may not get through baggage claim in time.', Object.assign(x, { tone: 'red' }));
+    const x = { extra: flightLine() };
+    if (d.preset && d.preset !== r.time + ' ' + r.date) d.preset = false; // any change of date or time drops the preset note
+    if (d.preset) return hint(ic('zone-ok', 22), '', 'Your pick-up is now set to ' + durText(g) + ' after your flight lands.', Object.assign(x, { tone: 'green', zone: true }));
+    const z = pickZone(g); // as the drop-off note: zone icon, the gap, the action (user 18.11.2026)
+    const text = g < 0 ? z.text + '<br>' + z.action : durText(g) + ' after your flight lands. ' + z.action;
+    return hint(ic(z.emoji, 22), '', text, Object.assign(x, { tone: z.tone, zone: true }));
   }
 
 
@@ -3884,6 +3947,14 @@ GO.router = (function () {
           let min = d.flight.at - 120, date = d.flight.date;
           while (min < 0) { min += 1440; date = u.addDays(date, -1); }
           min -= min % 15;
+          d.date = date; [d.h, d.m] = u.fromMin(min).split(':');
+          const v = u.parseIso(date); d.vy = v.getFullYear(); d.vm = v.getMonth();
+          d.preset = d.h + ':' + d.m + ' ' + d.date;
+        }
+        // pick-up after landing (user 18.11.2026): set 45 min after the landing, on the quarter
+        if (extras && GO.presetDrop && fixedArr()) {
+          let min = u.up15(d.flight.at + 45), date = d.flight.date;
+          while (min >= 1440) { min -= 1440; date = u.addDays(date, 1); }
           d.date = date; [d.h, d.m] = u.fromMin(min).split(':');
           const v = u.parseIso(date); d.vy = v.getFullYear(); d.vm = v.getMonth();
           d.preset = d.h + ':' + d.m + ' ' + d.date;
@@ -4363,15 +4434,20 @@ GO.router = (function () {
   }
 
   function checkItem(icon, text) {
-    return '<li class="check-item">' + ic(icon, 20, 'icon--success') + '<span class="t-body-sm">' + text + '</span></li>';
+    // Every GoOpti ride: a pale tinted circle, quieter than the solid one in the ride sheet (user 18.11.2026)
+    if (icon === 'check-soft') return '<li class="check-item"><svg class="icon" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex-shrink:0"><circle cx="12" cy="12" r="11" fill="#0a8079" fill-opacity=".12"/><path d="M7.5 12.5l3 3L16.5 9" fill="none" stroke="#0a8079" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="t-body-sm">' + text + '</span></li>';
+    const mark = icon === 'check-circle'
+      ? '<svg class="icon" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex-shrink:0"><circle cx="12" cy="12" r="11" fill="#0a8079"/><path d="M7 12.5l3.2 3.2L17 8.8" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+      : ic(icon, 20, 'icon--success');
+    return '<li class="check-item">' + mark + '<span class="t-body-sm">' + text + '</span></li>';
   }
 
   // the same three lines as every variant of GoOpti-offers-variants-v2.html (28.10.2026); plain teal ticks without the circle (16.11.2026)
   function trust() {
     return '<section class="trust-card" aria-labelledby="trust-title"><h2 id="trust-title" class="t-label-lg">Every GoOpti ride</h2><ul class="check-list">' +
-      checkItem('check', 'Exact pick-up time and details by SMS the day before') +
-      checkItem('check', 'Free cancellation within 24h of booking') +
-      checkItem('check', 'Door to door with trusted &amp; licensed drivers') +
+      checkItem('check-soft', 'Exact pick-up time and details by SMS the day before') +
+      checkItem('check-soft', 'Free cancellation within 24h of booking') +
+      checkItem('check-soft', 'Door to door with trusted &amp; licensed drivers') +
     '</ul></section>';
   }
 
@@ -4413,7 +4489,7 @@ GO.router = (function () {
       else if (other) sum += other.total;
       else { label = 'Choose departure ride'; act = 'to-departure'; }
     }
-    return '<div class="cta-bar cta-bar--total cta-inline"><div class="cta-inline__total">' +
+    return '<div class="cta-bar cta-bar--total cta-inline"><div class="cta-inline__total" data-act="total">' +
         '<div class="cta-inline__sum"><span class="t-label-lg total-info">Total<button type="button" class="total-info__btn" data-act="total" aria-label="Price details">' + GO.icon('info', 16) + '</button></span><span class="t-h2 nowrap" aria-live="polite">' + money2(sum + c.data.fee + refundSum(c.s)) + '</span></div>' +
         '<div class="cta-inline__note"><button class="link t-caption c-tertiary" data-act="total" aria-label="Price details, incl. booking fee">incl. booking fee</button></div>' +
       '</div><button class="btn btn--primary cta-inline__btn" data-act="' + act + '">' + label + '</button></div>';
@@ -4446,6 +4522,21 @@ GO.router = (function () {
       // Fetch this leg (and the other one of a round trip, for the total) when not cached yet
       mount(root) {
         slideLegs(root);
+        // a tap anywhere on a card picks it (slider, refund block, text); only How it works / What's included open the sheet instead
+        if (!root.__offerTap) {
+          root.__offerTap = true;
+          root.addEventListener('click', e => {
+            const card = e.target.closest && e.target.closest('.offer');
+            if (!card || e.target.closest('.offer__hit, [data-act="about"]')) return;
+            const h = card.querySelector('.offer__hit');
+            if (!h || h.disabled || h.getAttribute('aria-checked') === 'true') return;
+            const id = h.dataset.id;
+            setTimeout(() => {
+              const n = root.querySelector('.offer__hit[data-id="' + id + '"]');
+              if (n && n.getAttribute('aria-checked') !== 'true') n.click();
+            }, 0);
+          }, true);
+        }
         const range = root.querySelector('input[data-gauge]');
         if (range) range.addEventListener('input', () => {
           const o = gaugeOpts(ctx(leg).data)[+range.value];
@@ -4612,7 +4703,7 @@ GO.router = (function () {
           (c.data ? windowChart(c) : '') +
           '<ul class="points">' +
             point('clock', 'Exact time the day before', 'Comes by SMS, email and app the day before, always inside your pick-up time') +
-            point('map-pin', 'Door to door, a few short stops', 'A tried and trusted driver picks you up at your address') +
+            point('map-pin', 'Door to door, a few short stops', 'A trusted &amp; licensed driver picks you up at your address') +
             point('plane', 'At the airport on time', 'Your latest drop-off time is guaranteed. We plan every stop around it.') +
           '</ul>' +
         '</div>' + sheetFoot('Got it');
@@ -4657,7 +4748,7 @@ GO.router = (function () {
       : ['clock', o.kind === 'flex'
           ? b('We’ll set your exact pick-up time') + ' between ' + fromMin(o.pickFrom) + ' and ' + fromMin(o.pickTo) + ' and send it to you by SMS, email &amp; app the day before the transfer.'
           : b('Your driver picks you up at ' + fromMin(o.pickFrom)) + (priv ? '' : ' (±15 min)') + '. Exact pick-up time by SMS, email &amp; app the day before the transfer.'];
-    const drive = ['driver', q.from.type === 'airport' ? 'A tried and trusted driver takes you to your address.' : 'A tried and trusted driver picks you up at your address.'];
+    const drive = ['driver', q.from.type === 'airport' ? 'A trusted &amp; licensed driver takes you to your address.' : 'A trusted &amp; licensed driver picks you up at your address.'];
     const arrive = q.to.type === 'airport'
       ? ['plane', 'Latest drop-off at ' + to + ' at ' + arr + (priv ? '.' : ', guaranteed.')]
       : ['map-pin', 'Arrival in ' + to + ' by ' + arr + '.'];
@@ -4680,7 +4771,7 @@ GO.router = (function () {
   }
   function rideSheet(kind) {
     return {
-      overlay: true, base: sheetBase, sheetClass: 'sheet--bottom',
+      overlay: true, base: sheetBase, sheetClass: 'sheet--bottom sheet--full sheet--ride',
       render() {
         const c = sheetCtx();
         const o = rideOf(c, kind);
@@ -4785,29 +4876,44 @@ GO.router = (function () {
   };
 
   GO.screens['offers-total'] = {
-    overlay: true, base: sheetBase, sheetClass: 'sheet--bottom',
+    // as the Booking summary on the next steps (user 18.11.2026): full screen, a section per ride, the fee and the total
+    overlay: true, base: sheetBase, sheetClass: 'sheet--bottom sheet--full sheet--ride',
     render() {
       const c = sheetCtx();
       const legs = c.round ? ['out', 'ret'] : ['out'];
-      const lines = legs.map(l => ({ l, q: api.legSearch(c.s, l), o: pickedOf(l) })).filter(x => x.o);
-      if (!lines.length) return sheetHead('Price details') + '<div class="sheet__body"><p class="t-body c-secondary">Choose a ride first</p></div>' + sheetFoot('Close');
+      const all = legs.map(l => ({ l, q: api.legSearch(c.s, l), o: pickedOf(l) }));
+      const lines = all.filter(x => x.o);
+      const head = '<div class="sheet-handle" aria-hidden="true"></div>' +
+        '<header class="sheet-header"><div class="sheet-header__titles"><h2 id="sheet-title" class="t-h1">Booking summary</h2></div>' +
+        '<button class="icon-btn" data-act="close" aria-label="Close">' + ic('close', 24) + '</button></header>';
+      if (!lines.length) return head + '<div class="sheet__body"><p class="t-body c-secondary">Choose a ride first</p></div>' + sheetFoot('Close');
       const fee = c.data ? c.data.fee : 3.2;
-      const refund = 0; // chosen on Add-ons now (user 17.11.2026)
-      const sum = lines.reduce((a, x) => a + x.o.total, 0) + fee + refund;
-      const line = x => {
-        const qty = x.o.kind === 'private' ? '1 vehicle' : paxLabel(c.s) + (x.o.pax > 1 ? ' × ' + money(x.o.unit) : '');
-        const head = c.round ? (x.l === 'out' ? 'Departure' : 'Return') + ', ' + fmtDay(x.q.date) : '';
-        return '<div class="price-line"><dt>' + (head ? '<span class="t-label">' + head + '</span>' : '') + '<span class="t-body">' + shortTitle(x.o) + '</span><span class="t-caption c-tertiary">' + esc(qty) + '</span></dt><dd class="t-body">' + money2(x.o.total) + '</dd></div>';
+      const sum = lines.reduce((a, x) => a + x.o.total, 0) + fee;
+      const row = (k, v, cls) => '<div class="bsum__row' + (cls ? ' ' + cls : '') + '"><dt class="t-body">' + k + '</dt><dd class="t-body">' + v + '</dd></div>';
+      const sec = (title, body) => '<section class="bsum__sec"><h3 class="bsum__kicker t-label">' + title + '</h3>' + body + '</section>';
+      const name = o => o.kind === 'private' ? 'Private transfer' : o.kind === 'flex' ? 'Shared, ' + (o.window / 60) + 'h flexible pick-up' : 'Shared, fixed pick-up';
+      const ride = x => {
+        const title = c.round ? (x.l === 'out' ? 'Departure' : 'Return') : 'Your ride';
+        const route = '<div class="bsum__route t-h3">' + esc(placeLabel(x.q.from)) + ' → ' + esc(placeLabel(x.q.to)) + '</div>';
+        if (!x.o) return sec(title, route + '<p class="t-body c-tertiary">Not chosen yet — added when you choose it</p>');
+        const o = x.o, pick = o.kind === 'flex' ? fromMin(o.pickFrom) + '–' + fromMin(o.pickTo) : fromMin(o.pickFrom);
+        const qty = o.kind === 'private' ? '1 vehicle' : paxLabel(c.s) + (o.pax > 1 ? ' × ' + money(o.unit) : '');
+        return sec(title, route + '<dl class="bsum__rows">' +
+          row('Date', esc(fmtDay(x.q.date))) +
+          row('Ride', esc(name(o))) +
+          row(o.kind === 'flex' ? 'Pick-up between' : 'Pick-up', pick) +
+          row(x.q.to.type === 'airport' ? 'Latest drop-off' : 'Arrival by', fromMin(o.arrival)) +
+          row('Price', esc(qty)) +
+          row('Ride total', money2(o.total), 'bsum__row--strong') +
+        '</dl>');
       };
-      return sheetHead('Price details', c.round ? routeLabel(api.legSearch(c.s, 'out')) + ' and back' : routeLabel(c.q) + ', ' + fmtDay(c.q.date)) +
-        '<div class="sheet__body sheet__body--gap16">' +
-          '<dl class="price-lines">' + lines.map(line).join('') +
-            (refund ? '<div class="price-line"><dt class="t-body">100% Money Back</dt><dd class="t-body">' + money2(refund) + '</dd></div>' : '') +
-            '<div class="price-line"><dt class="t-body">Booking fee</dt><dd class="t-body">' + money2(fee) + '</dd></div>' +
-            '<div class="price-line price-line--total"><dt class="t-label-lg">Total</dt><dd class="t-h3">' + money2(sum) + '</dd></div>' +
-          '</dl>' +
-          (c.round && lines.length < 2 ? '<p class="t-caption c-tertiary">The ' + (lines[0].l === 'out' ? 'return' : 'departure') + ' ride is added when you choose it</p>' : '') +
-          '<p class="t-caption c-tertiary">Baggage, child seats and extras come on the next step</p>' +
+      return head +
+        '<div class="sheet__body bsum">' +
+          all.map(ride).join('') +
+          sec('Passengers', '<dl class="bsum__rows">' + row('Travelling', esc(paxLabel(c.s))) + '</dl>') +
+          sec('Add-ons', '<p class="t-body c-tertiary">Baggage, child seats and extras come on the next step</p>') +
+          '<section class="bsum__sec bsum__sec--total"><dl class="bsum__rows">' + row('Booking fee', money2(fee)) + '</dl>' +
+            '<div class="bsum__total"><span class="t-label-lg">Total</span><span class="t-h2 nowrap">' + money2(sum) + '</span></div></section>' +
         '</div>' + sheetFoot('Got it');
     },
     actions: closeAct,
@@ -4954,6 +5060,13 @@ GO.router = (function () {
     // v6 (Mobile 09.11.2026, user 09.11.2026): always "Baggage" with "+"; empty - what goes for free, "Only a personal item up to 5 kg"
     // (v5: "Add baggage" / "One personal item up to 5 kg for free"); chosen - the items
     const some = api.LUGGAGE.some(i => e.lug[i.id]);
+    // several kinds of baggage (user 18.11.2026): one per line, the count in its own column, the free personal item marked
+    if (some) {
+      const pax = GO.store.get().adults + GO.store.get().children;
+      const rows = [[pax, 'Personal item, 5 kg', true]].concat(api.LUGGAGE.filter(i => e.lug[i.id]).map(i => [e.lug[i.id], i.label]));
+      const list = '<span class="lug-sum">' + rows.map(x => '<span class="lug-sum__n">' + x[0] + '×</span><span class="lug-sum__name">' + esc(x[1]) + (x[2] ? ' <span class="lug-sum__free">Free</span>' : '') + '</span>').join('') + '</span>';
+      return lineCard('Change baggage', 'luggage', 'luggage', 'Baggage', list, 'chevron');
+    }
     return lineCard(some ? 'Change baggage' : 'Add baggage', 'luggage', 'luggage', some ? 'Baggage' : 'Add baggage', added.length ? added.map(esc).join(', ') : 'Only ' + (GO.store.get().adults + GO.store.get().children) + '× Personal item, 5 kg', 'chevron'); // right arrow in the grey circle, with baggage added too (user 17.11.2026)
   }
 
@@ -4968,14 +5081,18 @@ GO.router = (function () {
     // v5: the same card as Baggage and the flight, a chevron on the right (user 06.11.2026; was the design's 679:1437 row with "Select type")
     // empty: "Add child seat" / "Free for every child" (user 06.11.2026); chosen: "Child seat" and the count
     // v6 (Mobile 09.11.2026, user 09.11.2026): always "Child seat" with "+", "No seat needed" until seats are added (v5: "Add child seat" / "Free for every child")
-    if (GO.extrasBaggage() === 3) return lineCard(n ? 'Change child seats' : 'Add child seat', 'seats', 'seat-card', 'Child seat', n ? n + (n === 1 ? ' seat added' : ' seats added') : 'No seat needed', n ? 'edit' : true);
-    const sub = !done ? 'Free for every child' : n ? n + (n === 1 ? ' seat added' : ' seats added') : 'No seat needed';
+    // the tick "don't need a child seat" says so on the card (user 18.11.2026): "2 children don’t need a child seat"
+    const rest = done && e.seats.ok ? s.children - n : 0;
+    const noNeed = rest > 0 ? (rest === 1 ? '1 child doesn’t' : rest + ' children don’t') + ' need a child seat' : '';
+    const seatSub = [n ? n + (n === 1 ? ' seat added' : ' seats added') : '', noNeed].filter(Boolean).join(', ') || 'No seat selected';
+    if (GO.extrasBaggage() === 3) return lineCard(n ? 'Change child seats' : 'Add child seat', 'seats', 'seat-card', n || noNeed ? 'Child seat' : 'Add child seat', seatSub, 'chevron');
+    const sub = !done ? 'Free for every child' : seatSub;
     // variants page (04.11.2026): a link like "Add other passengers" on the payment page, the caption under it, no card, icon or chevron
-    if (window.GO_SEED && GO_SEED.seatLink) return '<div class="seat-link"><button type="button" class="link t-body-sm seat-link__btn" data-act="seats">' + (done ? 'Child seat' : 'Add child seat') + '</button>' +
+    if (window.GO_SEED && GO_SEED.seatLink) return '<div class="seat-link"><button type="button" class="link t-body-sm seat-link__btn" data-act="seats">' + (n || noNeed ? 'Child seat' : 'Add child seat') + '</button>' +
       '<span class="t-body-sm c-tertiary">' + sub + '</span></div>';
     return '<section class="ex-card" aria-label="Child seat"><button class="flight-add" data-act="seats">' +
       '<span class="flight-row__text">' +
-        '<span class="flight-row__title t-h3">' + (window.GO_SEED && GO_SEED.seatNoIcon ? '' : ic('seat-card', 20)) + '<span>' + (done ? 'Child seat' : 'Add child seat') + '</span></span>' +
+        '<span class="flight-row__title t-h3">' + (window.GO_SEED && GO_SEED.seatNoIcon ? '' : ic('seat-card', 20)) + '<span>' + (n || noNeed ? 'Child seat' : 'Add child seat') + '</span></span>' +
         '<span class="t-body-sm c-tertiary">' + sub + '</span>' +
       '</span>' + ic('chevron-right', 20) + '</button></section>';
   }
@@ -5009,11 +5126,10 @@ GO.router = (function () {
       return { level: 'warn', html: 'Night between <b>' + esc(first) + '</b> and <b>' + esc(b) + '</b>. Don’t forget to ' + link('double-check the selected date') + ' of your transport.' };
     }
     const gap = l.o.pickFrom - f.arr;
-    // zones as Anya's (23.10.2026): 45m and more fine, 30m tight, less too short
-    if (gap >= 45) return { level: 'ok', html: 'Your pick-up time is ' + u.fmtDur(gap) + ' after the flight’s landing' };
-    if (gap >= 30) return { level: 'warn', html: 'Your pick-up time is <b>' + u.fmtDur(gap) + '</b> after the flight’s landing, ' + link('consider changing it') };
-    if (gap >= 0) return { level: 'error', html: 'Your pick-up time is only <b>' + u.fmtDur(gap) + '</b> after the flight’s landing, ' + link('consider changing it') };
-    return { level: 'error', html: 'Your pick-up time is <b>' + u.fmtDur(-gap) + '</b> before the flight’s landing, ' + link('consider changing it') };
+    // zones and wording as the drop-off (user 18.11.2026): under 45 min red, 45 min to 1h 30 green, over 1h 30 red
+    const z = window.GO_pickZone(gap);
+    return { level: z.level, icon: z.emoji, html: esc(z.text) + (z.level === 'ok' ? ' ' + z.action : ''),
+      action: z.level === 'ok' ? '' : '<button class="link t-label verdict__action" ' + change + (z.preset ? ' data-preset="1"' : '') + '>' + z.action + '</button>' };
   }
 
   // Filled flight: "EZY5832, Thu 15 Oct 12:25" / "Venice → London Gatwick", Change on the right, the verdict below
@@ -5042,7 +5158,7 @@ GO.router = (function () {
     const v5 = GO.extrasBaggage() === 3;
     return '<button class="flight-add" data-act="flight" data-leg="' + fl.leg + '">' +
       '<span class="flight-row__text">' +
-        '<span class="flight-row__title t-h3">' + ic(fl.kind === 'dep' ? 'flight-takeoff' : 'flight-land', 20) + '<span>' + (v5 ? 'Check your flight' : fl.leg === 'ret' ? 'Add your return flight' : 'Add your flight') + '</span></span>' +
+        '<span class="flight-row__title t-h3">' + ic(fl.kind === 'dep' ? 'flight-takeoff' : 'flight-land', 20) + '<span>' + (v5 ? 'Check your flight' : fl.leg === 'ret' ? 'Add your return flight' : 'Add your flight') + '</span><span class="badge badge--success flight-add__rec">Recommended</span></span>' + // green badge (user 18.11.2026)
         // simpler (user 03.11.2026; was "We’ll check that your drop-off / pick-up time works with it")
         // v5 (Presentations New 05.11 679:1415): "your drop-off fits your flight", the pick-up by analogy;
         // v5 since 06.11.2026 (user): "Check your flight" / "If your drop-off fits your flight", the line goes on from the title
@@ -5170,7 +5286,7 @@ GO.router = (function () {
   }
   // v5: "Total" with "incl. transaction fee" under it on the left (opens the price details), the sum on the right; the same line on Details
   function totalLine(T) {
-    return '<div class="total-line"><div class="total-line__label">' + '<span class="t-label-lg total-info">Total<button type="button" class="total-info__btn" data-act="total" aria-label="Price details">' + GO.icon('info', 16) + '</button></span>' +
+    return '<div class="total-line" data-act="total"><div class="total-line__label">' + '<span class="t-label-lg total-info">Total<button type="button" class="total-info__btn" data-act="total" aria-label="Price details">' + GO.icon('info', 16) + '</button></span>' +
         '<button class="link t-caption c-tertiary total-line__fee" data-act="total" aria-label="Price details, incl. booking fee">incl. booking fee</button></div>' +
       '<span class="t-h2 nowrap" aria-live="polite">' + money2(T.total) + '</span></div>';
   }
@@ -5178,7 +5294,7 @@ GO.router = (function () {
   // Sticky bar as on Offers and Details (user 03.11.2026; Total and Continue stood at the page end before):
   // Total with "incl. transaction fee" opening the price details, Continue on the right
   function totalBar(T) {
-    return '<div class="cta-bar cta-bar--total cta-inline"><div class="cta-inline__total">' +
+    return '<div class="cta-bar cta-bar--total cta-inline"><div class="cta-inline__total" data-act="total">' +
         '<div class="cta-inline__sum"><span class="t-label-lg total-info">Total<button type="button" class="total-info__btn" data-act="total" aria-label="Price details">' + GO.icon('info', 16) + '</button></span><span class="t-h2 nowrap" aria-live="polite">' + money2(T.total) + '</span></div>' +
         '<div class="cta-inline__note"><button class="link t-caption c-tertiary" data-act="total" aria-label="Price details, incl. booking fee">incl. booking fee</button></div>' +
       '</div><button class="btn btn--primary cta-inline__btn" data-act="continue">Continue</button></div>';
@@ -5216,7 +5332,7 @@ GO.router = (function () {
     return GO.routeHead(esc(routeName(q.from)) + (round ? ' ⇄ ' : ' → ') + esc(routeName(q.to)),
       // one way: the date and time exactly as on Offers ("Fri 27 Nov, by 10:00"); round trip: both dates (user 12.11.2026)
       [round ? qs.filter(x => x.date).map(x => '<span class="nowrap">' + esc(fmtDay(x.date)) + '</span>').join(' – ')
-        : (q.date ? esc(GO.whenLabel(q)) : ''), esc(paxLabel(s))], false); // no pencil on Add-ons and payment (user 12.11.2026)
+        : (q.date ? esc(GO.whenLabel(q)) : ''), esc(paxLabel(s))], 'summary'); // no pencil on Add-ons and payment (user 12.11.2026); the summary (i) there (user 18.11.2026)
   }
   GO.tripHead = tripHead;
   function bookingHeadV5(s, L) { return tripHead(s, L) + GO.pageTitle('Choose add-ons'); }
@@ -5629,6 +5745,60 @@ GO.router = (function () {
 
   GO.booking = { ex, legs, totals, money2, paxLabel };
 
+  // ---------- Booking summary (user 18.11.2026): one full-screen page from the (i) next to the step title and the (i) at Total —
+  // every ride with its date, times and price, the passengers, the add-ons, then the fee and the total ----------
+  function sumRideName(o) {
+    if (o.kind === 'private') return 'Private transfer';
+    return o.kind === 'flex' ? 'Shared, ' + (o.window / 60) + 'h flexible pick-up' : 'Shared, fixed pick-up';
+  }
+  // the flight in the summary with its check (user 18.11.2026): the zone colour and text of the flight card - the ride fits the flight or not
+  function flightCheck(f, o, q) {
+    const dep = f.dep != null && api.isAirport(q.to);
+    const z = dep ? window.GO_dropZone(f.dep - o.arrival) : f.arr != null ? window.GO_pickZone(o.pickFrom - f.arr) : null;
+    const when = dep ? 'departs ' + fromMin(f.dep) : f.arr != null ? 'lands ' + fromMin(f.arr) : '';
+    // one line (user 18.11.2026): the zone icon in its colour after the flight, the sentence only as its label
+    const lvl = z ? (z.level === 'ok' ? 'ok' : z.level === 'warn' ? 'warn' : 'error') : '';
+    const mark = z ? '<span class="bsum__check verdict--' + lvl + '" role="img" aria-label="' + esc(z.text) + '" title="' + esc(z.text) + '">' + ic(z.emoji, 18) + '</span>' : '';
+    return '<div class="bsum__row"><dt class="t-body">Flight</dt><dd class="t-body bsum__flight">' + esc(f.code) + (when ? ', ' + when : '') + mark + '</dd></div>';
+  }
+  function summarySheet(s) {
+    const e = ex(), L = legs(s), ok = L.length && !L.some(l => !l.o);
+    const T = ok ? totals(s, e, L) : { lines: [], total: 0 };
+    const row = (k, v, cls) => '<div class="bsum__row' + (cls ? ' ' + cls : '') + '"><dt class="t-body">' + k + '</dt><dd class="t-body">' + v + '</dd></div>';
+    const sec = (title, body) => '<section class="bsum__sec"><h3 class="bsum__kicker t-label">' + title + '</h3>' + body + '</section>';
+    const ridesHtml = L.filter(l => l.o).map(l => {
+      const o = l.o, q = l.q, f = e.flights && e.flights[l.leg];
+      const pick = o.kind === 'flex' ? fromMin(o.pickFrom) + '–' + fromMin(o.pickTo) : fromMin(o.pickFrom);
+      return sec(L.length > 1 ? (l.leg === 'ret' ? 'Return' : 'Departure') : 'Your ride',
+        '<div class="bsum__route t-h3">' + esc(routeName(q.from)) + ' → ' + esc(routeName(q.to)) + '</div>' +
+        '<dl class="bsum__rows">' +
+          row('Date', esc(fmtDay(q.date))) +
+          row('Ride', esc(sumRideName(o))) +
+          row(o.kind === 'flex' ? 'Pick-up between' : 'Pick-up', pick) +
+          row(api.isAirport(q.to) ? 'Latest drop-off' : 'Arrival by', fromMin(o.arrival)) +
+          (f ? flightCheck(f, o, q) : '') +
+          row('Price', money2(o.total), 'bsum__row--strong') +
+        '</dl>');
+    }).join('');
+    const seatRows = e.seats && s.children ? api.SEATS.filter(x => e.seats.n[x.id]).map(x => row((e.seats.n[x.id] > 1 ? e.seats.n[x.id] + '× ' : '') + esc(x.label), 'Free')).join('') : '';
+    const extraLines = T.lines.slice(1).filter(l => !l.voucher && l.label !== 'Transaction fee');
+    const addons = extraLines.map(l => row(esc(l.label), money2(l.value))).join('') + seatRows;
+    const payLines = T.lines.filter(l => l.voucher || l.label === 'Transaction fee').map(l => row(esc(l.label), (l.value < 0 ? '−' : '') + money2(Math.abs(l.value)))).join('');
+    return '<div class="sheet-handle" aria-hidden="true"></div>' +
+      '<header class="sheet-header"><div class="sheet-header__titles"><h2 id="sheet-title" class="t-h1">Booking summary</h2></div>' +
+      '<button class="icon-btn" data-act="close" aria-label="Close">' + ic('close', 24) + '</button></header>' +
+      '<div class="sheet__body bsum">' +
+        ridesHtml +
+        sec('Passengers', '<dl class="bsum__rows">' + row('Travelling', esc(paxLabel(s))) + '</dl>') +
+        sec('Add-ons', addons ? '<dl class="bsum__rows">' + addons + '</dl>' : '<p class="t-body c-tertiary">No add-ons</p>') +
+        '<section class="bsum__sec bsum__sec--total"><dl class="bsum__rows">' + payLines + '</dl>' +
+          '<div class="bsum__total"><span class="t-label-lg">Total</span><span class="t-h2 nowrap">' + money2(T.total) + '</span></div></section>' +
+      '</div>' +
+      '<div class="cta-bar"><button class="btn btn--primary" data-act="close">Got it</button></div>';
+  }
+  GO.bookingSummary = summarySheet;
+  GO.summaryBtn = '<button type="button" class="page-info" data-act="total" aria-label="Booking summary">' + ic('info', 24) + '</button>';
+
   // ---------- sheet: child seats (Flow 10 - Extras - children - sheet - Child seats - not chosen / no seat confirmed, 2287:16948 / 2287:17425) ----------
   // Up to one seat per child. A consent checkbox stands over Save: "I confirm that 1 child doesn't need a child seat"; disabled once every child has a seat.
   let seatDraft = null;
@@ -5647,7 +5817,8 @@ GO.router = (function () {
         '<div class="hint__body"><p class="hint__title t-label-lg">Add a seat for every child</p><p class="hint__text t-body-sm">Or confirm they don’t need one</p></div></div>' : '') +
       '<label class="checkbox"><input type="checkbox" data-seat-ok' + (left > 0 && seatDraft.ok ? ' checked' : '') + (left > 0 ? '' : ' disabled') + (err ? ' aria-invalid="true" aria-describedby="seat-err"' : '') + '><span class="checkbox__box" aria-hidden="true">' + ic('check', 12) + '</span>' +
         '<span class="t-body">I confirm that <b>' + who + ' need a child seat</span></label>' +
-      '<button class="btn btn--primary" data-act="seats-save"' + (left > 0 && !seatDraft.ok ? ' disabled' : '') + '>Save</button>';
+      // all seats taken off: Save removes them without the tick (user 18.11.2026: removing a seat didn't stick, Save stayed off)
+      '<button class="btn btn--primary" data-act="seats-save">Save</button>'; // always on, pink (user 18.11.2026)
   }
   function seatRow(item, s) {
     const v = seatDraft.n[item.id], full = seatsLeft(s) <= 0;
@@ -5702,7 +5873,11 @@ GO.router = (function () {
       },
       'seats-save'() {
         const s = GO.store.get();
-        setEx({ seats: { n: Object.assign({}, seatDraft.n), ok: seatsLeft(s) > 0 && seatDraft.ok, kids: s.children } });
+        // asked before payment: a child without a seat still needs the tick - the plate and the checkbox say so
+        if (seatsRequired && seatsLeft(s) > 0 && !seatDraft.ok) { const c = document.querySelector('[data-seat-ok]'); if (c) c.focus(); return; }
+        const none = !Object.values(seatDraft.n).some(Boolean);
+        // nothing picked and nothing confirmed: the seats are removed, the card goes back to "Add child seat"
+        setEx({ seats: none && !seatDraft.ok ? null : { n: Object.assign({}, seatDraft.n), ok: seatsLeft(s) > 0 && seatDraft.ok, kids: s.children } });
         if (seatsRequired) { seatsRequired = false; return GO.router.go('/details', { replace: true }); }
         GO.router.back();
         setTimeout(() => { const b = document.querySelector('[data-act=seats]'); if (b) b.focus({ preventScroll: true }); }, 50);
@@ -5728,7 +5903,7 @@ GO.router = (function () {
   function lugTerms(free) {
     if (free) return '<p class="t-body c-secondary">Your private ride carries your baggage at no extra cost. Add it so the driver knows.</p>';
     return '<p class="t-body c-secondary">Each passenger can take <b class="c-primary">one personal item up to 5 kg</b> for free, max <span class="nowrap">40×20×25 cm</span></p>' +
-      '<p class="lug__terms t-body-sm">We can only take extra baggage you add when booking. Undeclared baggage is charged up to €27, or we may not be able to take it. Mind the maximum sizes.</p>';
+      '<p class="lug__terms t-body-sm">Please add any extra baggage when you book so we can make room for it. Undeclared bags may cost up to €27 extra, or we might not have space for them. Please check the maximum sizes before you travel.</p>';
   }
   GO.screens['extras-luggage'] = {
     overlay: true, base: 'extras', sheetClass: 'sheet--bottom',
@@ -5771,8 +5946,9 @@ GO.router = (function () {
 
   // ---------- sheet: price details from the bar (as details-total) ----------
   GO.screens['extras-total'] = {
-    overlay: true, base: 'extras', sheetClass: 'sheet--bottom',
+    overlay: true, base: 'extras', sheetClass: 'sheet--bottom sheet--full sheet--ride',
     render(s) {
+      return summarySheet(s);
       const L = legs(s);
       const T = L.length && !L.some(l => !l.o) ? totals(s, ex(), L) : { lines: [], total: 0 };
       return '<div class="sheet-handle" aria-hidden="true"></div>' +
@@ -5784,7 +5960,7 @@ GO.router = (function () {
             '<div class="price-line price-line--total"><dt class="t-label-lg">Total</dt><dd class="t-h3">' + money2(T.total) + '</dd></div>' +
           '</dl>' +
         '</div>' +
-        '<div class="cta-bar"><button class="btn btn--secondary" data-act="close">Got it</button></div>';
+        '<div class="cta-bar"><button class="btn btn--primary" data-act="close">Got it</button></div>';
     },
     actions: { close: () => GO.router.back() },
   };
@@ -6680,8 +6856,9 @@ GO.router = (function () {
 
   // ---------- sheet: price details (the Extras breakdown) ----------
   GO.screens['details-total'] = {
-    overlay: true, base: 'details', sheetClass: 'sheet--bottom',
+    overlay: true, base: 'details', sheetClass: 'sheet--bottom sheet--full sheet--ride',
     render(s) {
+      return GO.bookingSummary(s);
       const L = B.legs(s);
       const T = L.length && !L.some(l => !l.o) ? B.totals(s, B.ex(), L) : { lines: [], total: 0 };
       return '<div class="sheet-handle" aria-hidden="true"></div>' +
@@ -6693,7 +6870,7 @@ GO.router = (function () {
             '<div class="price-line price-line--total"><dt class="t-label-lg">Total</dt><dd class="t-h3">' + B.money2(T.total) + '</dd></div>' +
           '</dl>' +
         '</div>' +
-        '<div class="cta-bar"><button class="btn btn--secondary" data-act="close">Got it</button></div>';
+        '<div class="cta-bar"><button class="btn btn--primary" data-act="close">Got it</button></div>';
     },
     actions: { close: () => GO.router.back() },
   };
@@ -7306,7 +7483,7 @@ GO.router = (function () {
           '</dl>' +
           '<p class="t-caption c-tertiary">' + (b.payBy ? esc(payLine(b)) : 'Paid with ' + esc(b.paidWith) + '. The receipt and invoice are in your email.') + '</p>' +
         '</div>' +
-        '<div class="cta-bar"><button class="btn btn--secondary" data-act="close">Got it</button></div>';
+        '<div class="cta-bar"><button class="btn btn--primary" data-act="close">Got it</button></div>';
     },
     actions: { close: () => GO.router.back() },
   };
@@ -7382,10 +7559,10 @@ GO.router = (function () {
     hide();
     panel = document.createElement('div');
     panel.className = 'td' + (wrap ? ' td--wrap' : '');
-    panel.innerHTML = '<div class="td__head">TEST DATA</div>' + opts.map((o, i) =>
+    panel.innerHTML = '<div class="td__head"><span>TEST DATA</span><button type="button" class="td__hide" data-td-hide>Hide</button></div>' + opts.map((o, i) =>
       '<button type="button" class="td__opt" data-td="' + i + '">' + GO.u.esc(o.label) + (o.note ? ' <span class="td__note">— ' + GO.u.esc(o.note) + '</span>' : '') + '</button>').join('');
     panel.addEventListener('pointerdown', ev => ev.preventDefault()); // keep the focus (and the phone keyboard) in the field
-    panel.addEventListener('click', ev => { const b = ev.target.closest('[data-td]'); if (b) onPick(+b.dataset.td); });
+    panel.addEventListener('click', ev => { if (ev.target.closest('[data-td-hide]')) return hide(); const b = ev.target.closest('[data-td]'); if (b) onPick(+b.dataset.td); }); // Hide closes it without a pick (user 18.11.2026)
     owner = anchor;
     document.body.appendChild(panel);
     place();
