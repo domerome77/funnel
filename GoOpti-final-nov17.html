@@ -1663,6 +1663,8 @@ input:checked + .switch--lg::after { transform: translateX(20px); }
 .pay-card .form-field { gap: var(--space-4); }
 .pay-card:not(:has(.pay-radios--card)) .form-field:first-of-type > label { padding-right: 36px; }
 .pay-card > .btn { width: 100%; }
+/* no saved cards (guest): the fields start under the cross, it no longer sits on the Card number field (user 18.11.2026) */
+.pay-card:not(:has(.pay-radios--card)) { padding-top: 44px; }
 .pay-foot--v5 .pay-note { gap: var(--space-8); font-size: var(--font-size-caption); line-height: var(--line-height-caption); }
 .pay-foot--v5 .pay-note > .icon { margin-top: 0; }
 /* a saved card: the radio row and the bin right after the number, the line under both (Damian 05.11.2026, as goopti.com) */
@@ -7758,7 +7760,7 @@ const GO_TWEAKS = /*EDITMODE-BEGIN*/{
     clear();
     const main = input.closest('main.details');
     if (!main) return;
-    let start = input.closest('.card-fields');
+    let start = input.closest('.pay-card') || input.closest('.card-fields'); // Pay now stays in view with the card block (user 18.11.2026)
     if (!start) { start = input; while (start.parentElement !== main) start = start.parentElement; }
     for (let n = start; n && n !== document.body; n = n.parentElement) {
       for (let s = n.nextElementSibling; s; s = s.nextElementSibling) {
