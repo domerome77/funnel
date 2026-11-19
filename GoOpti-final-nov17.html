@@ -950,8 +950,8 @@ html.has-kb .sheet-layer { height: calc(var(--vvh, 100%) - var(--kb)); }
 .buffer__track { position: absolute; left: 4px; right: 4px; top: 50%; height: 8px; transform: translateY(-50%); border-radius: var(--radius-full); background: var(--track, color-mix(in srgb, var(--tone) 25%, transparent)); }
 .vgauge__win { position: absolute; left: 4px; top: 50%; height: 8px; transform: translateY(-50%); border-radius: var(--radius-full) 0 0 var(--radius-full); background: var(--tone); pointer-events: none; }
 .buffer input[type=range] { -webkit-appearance: none; appearance: none; position: absolute; inset: 0; width: 100%; height: 28px; margin: 0; background: transparent; cursor: pointer; }
-.buffer input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 28px; height: 28px; border-radius: 50%; background: var(--color-bg-page); border: 3px solid var(--tone); box-shadow: var(--shadow-raised); }
-.buffer input[type=range]::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: var(--color-bg-page); border: 3px solid var(--tone); box-shadow: var(--shadow-raised); }
+.buffer input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 44px; height: 28px; box-sizing: border-box; border-radius: var(--radius-full); background: var(--color-bg-page) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 28'%3E%3Cpath d='M17.5 10.5l-3.5 3.5 3.5 3.5M26.5 10.5l3.5 3.5-3.5 3.5' fill='none' stroke='%2366bfb3' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat; background-origin: border-box; border: 2px solid var(--tone); box-shadow: var(--shadow-raised); } /* a pill with arrows left and right: it reads as draggable (user 19.11.2026; was a 28 circle) */
+.buffer input[type=range]::-moz-range-thumb { width: 44px; height: 28px; box-sizing: border-box; border-radius: var(--radius-full); background: var(--color-bg-page) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 28'%3E%3Cpath d='M17.5 10.5l-3.5 3.5 3.5 3.5M26.5 10.5l3.5 3.5-3.5 3.5' fill='none' stroke='%2366bfb3' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat; background-origin: border-box; border: 2px solid var(--tone); box-shadow: var(--shadow-raised); }
 .buffer input[type=range]:focus-visible { outline: 0; }
 .buffer input[type=range]:focus-visible::-webkit-slider-thumb { outline: 2px solid var(--color-focus-ring); outline-offset: 2px; }
 /* the stop names above the slider, 10px over the track; only the text takes a click, the rest of the box would keep the thumb from dragging */
@@ -1148,6 +1148,13 @@ div.booking-b__toggle { cursor: default; } /* always open (variants page, 3): no
 .nw-cover__item > .icon { flex-shrink: 0; }
 .nw-cover__text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--space-4); }
 .nw-terms { align-self: flex-start; }
+/* No Worries and Money Back details: full screen and larger, as the Shared and Private ride details (user 19.11.2026) */
+.sheet--ride .nw-cover { gap: var(--space-24); }
+.sheet--ride .nw-cover__item { gap: var(--space-16); }
+.sheet--ride .nw-cover__item > svg { width: 24px; height: 24px; margin-top: 2px; }
+.sheet--ride .nw-cover__text .t-body-sm { font-size: var(--font-size-body); line-height: var(--line-height-body); }
+.sheet--ride .nw-cover__text .t-label { font-size: var(--font-size-body-lg, 18px); line-height: 1.45; }
+.sheet--ride .nw-terms { font-size: var(--font-size-body); }
 /* No Worries as one white card (client sketch, user 03.11.2026): title and "Find out more" on top, the promise and the switch under them */
 .nw { display: flex; flex-direction: column; gap: var(--space-4); padding: calc(var(--layout-card-padding) - 1px); /* minus the border: the text in line with the other cards */ border: 1px solid var(--color-border-subtle); border-radius: var(--radius-lg); background: var(--color-bg-page); }
 /* with the package on the whole card turns mint with a green border, as the picked offer cards (user 03.11.2026) */
@@ -1247,7 +1254,11 @@ ul.place-list { list-style: none; }
 .offer .refund--in { pointer-events: auto; z-index: 1; }
 .refund--in:has(input:focus-visible) { outline: 2px solid var(--color-focus-ring); outline-offset: 4px; border-radius: var(--radius-md); }
 .flight-add__sub { line-height: 18px; }
-.flight-add__rec { font-size: 12px; line-height: 16px; font-weight: 600; padding: 2px var(--space-8); margin-left: var(--space-4); }
+/* Recommended (user 19.11.2026): the card itself takes the green line, the word sits in a notch on its top edge, no fill */
+.flight-add__rec { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; padding: 0; margin: -1px; border: 0; }
+.ex-card:has(> .flight-add:only-child .flight-add__rec) { position: relative; margin-top: 8px; border: 1px solid var(--color-border-subtle); } /* the grey line of the other blocks (user 19.11.2026) */
+.ex-card:has(> .flight-add:only-child .flight-add__rec):hover { border-color: var(--color-border-input); }
+.ex-card:has(> .flight-add:only-child .flight-add__rec)::before { content: 'Recommended'; position: absolute; top: 0; left: calc(var(--layout-card-padding) - 6px); transform: translateY(-50%); padding: 0 6px; background: var(--color-bg-page); color: var(--color-text-secondary); font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: .02em; pointer-events: none; }
 .lug-sum { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: var(--space-8); row-gap: 2px; margin-top: 2px; line-height: 20px; }
 .lug-sum__n { text-align: right; font-weight: 600; color: var(--color-text-primary); font-variant-numeric: tabular-nums; }
 .lug-sum__free { color: var(--color-text-success); }
@@ -1294,7 +1305,7 @@ input:checked + .switch--lg::after { transform: translateX(20px); }
 .extras .ex-total--v5 { flex: 1 0 auto; }
 .ex-total--v5 > .ex-invoice { margin-top: auto; }
 /* a small info icon after Total, opens the price details (user 17.11.2026) */
-/* "incl. transaction fee" lighter (user 17.11.2026) */
+/* "incl. booking fee" lighter (user 17.11.2026) */
 .cta-inline__note .link, .total-line__fee { color: var(--neutral-500); }
 /* the whole Total area opens the summary, not only the (i) (user 18.11.2026) */
 .cta-inline__total[data-act], .total-line[data-act] { cursor: pointer; }
@@ -1458,7 +1469,7 @@ input:checked + .switch--lg::after { transform: translateX(20px); }
 .payment__form { display: flex; flex-direction: column; gap: var(--space-12); }
 /* payment (29.10.2026, as the Revolut checkout 2799:9): sections of full-width buttons, one per method */
 .pay-methods { display: flex; flex-direction: column; gap: var(--space-12); }
-/* Total over the ways to pay: the sum on the left, "incl. transaction fee" on the right, on one baseline (user 02.11.2026) */
+/* Total over the ways to pay: the sum on the left, "incl. booking fee" on the right, on one baseline (user 02.11.2026) */
 .pay-total { flex: none; flex-direction: row; flex-wrap: wrap; align-items: baseline; justify-content: space-between; column-gap: var(--space-12); }
 .pay-sec { gap: var(--space-16); }
 .pay-marks { display: flex; gap: var(--space-4); }
@@ -2357,9 +2368,9 @@ GO.routeHead = function (route, meta, editLabel) {
       : editLabel === false ? '<span class="route-top__spacer" aria-hidden="true"></span>'
       : '<button class="icon-btn route-top__edit" data-act="edit" aria-label="' + esc(editLabel || 'Change date and time') + '">' + ic('edit', 20) + '</button>') +
     // three equal invisible hit zones over the header (user 18.11.2026): the left third goes back, the middle and right thirds open the summary
-    (editLabel === 'summary' ? '<div class="route-zones"><button type="button" class="route-zones__z" data-act="back" tabindex="-1" aria-hidden="true"></button>' +
-      '<button type="button" class="route-zones__z" data-act="total" tabindex="-1" aria-hidden="true"></button>' +
-      '<button type="button" class="route-zones__z" data-act="total" tabindex="-1" aria-hidden="true"></button></div>' : '') +
+    (editLabel !== false ? '<div class="route-zones"><button type="button" class="route-zones__z" data-act="back" tabindex="-1" aria-hidden="true"></button>' +
+      '<button type="button" class="route-zones__z" data-act="' + (editLabel === 'summary' ? 'total' : 'edit') + '" tabindex="-1" aria-hidden="true"></button>' +
+      '<button type="button" class="route-zones__z" data-act="' + (editLabel === 'summary' ? 'total' : 'edit') + '" tabindex="-1" aria-hidden="true"></button></div>' : '') +
   '</header></div>';
 };
 // the screen title under the route header (22 bold, 16 / 16 / 4)
@@ -4380,12 +4391,12 @@ GO.router = (function () {
   function gauge(opts, cur, on) {
     const last = opts.length - 1, at = opts.indexOf(cur);
     const ticks = opts.map((o, k) => {
-      const pos = k === 0 ? '0' : k === last ? '100%' : 'calc(14px + (100% - 28px) * ' + k / last + ')';
+      const pos = k === 0 ? '0' : k === last ? '100%' : 'calc(22px + (100% - 44px) * ' + k / last + ')';
       return '<button class="buffer__tick' + (k === at ? ' is-on' : '') + '" style="left:' + pos + '" data-act="pick" data-id="' + o.id + '" tabindex="-1" aria-hidden="true"><span>' + tickName(o) + '</span></button>';
     }).join('');
     const val = (cur.kind === 'flex' ? 'flexible pick-up, ' + hours(cur.window) : 'fixed pick-up') + ', ' + money(cur.unit);
     return '<div class="buffer vgauge is-live" style="' + (on ? '--tone:var(--color-icon-success);--tick-color:var(--color-text-success)' : '--tone:color-mix(in srgb, var(--neutral-400) 25%, var(--color-bg-page));--track:var(--tone);--tick-color:var(--color-text-tertiary)') + '">' +
-      '<div class="buffer__slider"><div class="buffer__track"></div><div class="vgauge__win" style="right:calc(14px + (100% - 28px) * ' + (1 - at / last) + ')"></div>' +
+      '<div class="buffer__slider"><div class="buffer__track"></div><div class="vgauge__win" style="right:calc(22px + (100% - 44px) * ' + (1 - at / last) + ')"></div>' +
         '<input type="range" data-gauge min="0" max="' + last + '" step="1" value="' + at + '" aria-label="Pick-up time" aria-valuetext="' + esc(val) + '">' +
       '</div><div class="buffer__ticks">' + ticks + '</div></div>';
   }
@@ -4440,7 +4451,7 @@ GO.router = (function () {
 
   function checkItem(icon, text) {
     // Every GoOpti ride: a pale tinted circle, quieter than the solid one in the ride sheet (user 18.11.2026)
-    if (icon === 'check-soft') return '<li class="check-item"><svg class="icon" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex-shrink:0"><circle cx="12" cy="12" r="11" fill="#0a8079" fill-opacity=".12"/><path d="M7.5 12.5l3 3L16.5 9" fill="none" stroke="#0a8079" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="t-body-sm">' + text + '</span></li>';
+    if (icon === 'check-soft') return '<li class="check-item"><svg class="icon" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="flex-shrink:0"><path d="M7.5 12.5l3 3L16.5 9" fill="none" stroke="#0a8079" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="t-body-sm">' + text + '</span></li>';
     const mark = icon === 'check-circle'
       ? '<svg class="icon" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex-shrink:0"><circle cx="12" cy="12" r="11" fill="#0a8079"/><path d="M7 12.5l3.2 3.2L17 8.8" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
       : ic(icon, 20, 'icon--success');
@@ -4482,7 +4493,7 @@ GO.router = (function () {
   }
 
   // Bottom bar, one line as on GoOpti-offers-variants-v2.html (the client's GoOpti-Offers-2-products.html, 28.10.2026):
-  // Total and the sum on the left, "incl. transaction fee" under them opens Price details, the button takes the right half.
+  // Total and the sum on the left, "incl. booking fee" under them opens Price details, the button takes the right half.
   // One-way: Continue. Round trip, Departure: departure total + "Choose return ride"; Return: both rides + one fee, Continue.
   function ctaBar(c, o) {
     if (c.data.empty && !o) return '';
@@ -4708,7 +4719,7 @@ GO.router = (function () {
           (c.data ? windowChart(c) : '') +
           '<ul class="points">' +
             point('clock', 'Exact time the day before', 'Comes by SMS, email and app the day before, always inside your pick-up time') +
-            point('map-pin', 'Door to door, a few short stops', 'A trusted &amp; licensed driver picks you up at your address') +
+            point('map-pin', 'Door to door, a few short stops', 'A trusted &amp; licensed driver picks you up at your chosen pick-up point') +
             point('plane', 'At the airport on time', 'Your latest drop-off time is guaranteed. We plan every stop around it.') +
           '</ul>' +
         '</div>' + sheetFoot('Got it');
@@ -4753,7 +4764,7 @@ GO.router = (function () {
       : ['clock', o.kind === 'flex'
           ? b('We’ll set your exact pick-up time') + ' between ' + fromMin(o.pickFrom) + ' and ' + fromMin(o.pickTo) + ' and send it to you by SMS, email &amp; app the day before the transfer.'
           : b('Your driver picks you up at ' + fromMin(o.pickFrom)) + (priv ? '' : ' (±15 min)') + '. Exact pick-up time by SMS, email &amp; app the day before the transfer.'];
-    const drive = ['driver', q.from.type === 'airport' ? 'A trusted &amp; licensed driver takes you to your address.' : 'A trusted &amp; licensed driver picks you up at your address.'];
+    const drive = ['driver', q.from.type === 'airport' ? 'A trusted &amp; licensed driver takes you to your chosen drop-off point.' : 'A trusted &amp; licensed driver picks you up at your chosen pick-up point.'];
     const arrive = q.to.type === 'airport'
       ? ['plane', 'Latest drop-off at ' + to + ' at ' + arr + (priv ? '.' : ', guaranteed.')]
       : ['map-pin', 'Arrival in ' + to + ' by ' + arr + '.'];
@@ -4987,7 +4998,7 @@ GO.router = (function () {
       const off = v.kind === 'percent' ? Math.round(transfer * v.value) / 100 : Math.min(v.value, transfer);
       lines.push({ label: 'Promo code ' + v.code + ', ' + voucherText(v), value: -off, voucher: true });
     }
-    lines.push({ label: 'Transaction fee', value: api.FEE });
+    lines.push({ label: 'Booking fee', value: api.FEE });
     return { lines, total: lines.reduce((a, l) => a + l.value, 0) };
   }
   function voucherText(v) { return v.kind === 'percent' ? v.value + '% off transfers' : money(v.value) + ' off'; }
@@ -5289,7 +5300,7 @@ GO.router = (function () {
     if (T) return '<section class="ex-total ex-total--v5" aria-label="Promo code and invoice">' + promoHtml + invoiceHtml + '</section>';
     return '<section class="ex-total" aria-label="Promo code and invoice">' + promoHtml + invoiceHtml + '</section>';
   }
-  // v5: "Total" with "incl. transaction fee" under it on the left (opens the price details), the sum on the right; the same line on Details
+  // v5: "Total" with "incl. booking fee" under it on the left (opens the price details), the sum on the right; the same line on Details
   function totalLine(T) {
     return '<div class="total-line" data-act="total"><div class="total-line__label">' + '<span class="t-label-lg total-info">Total<button type="button" class="total-info__btn" data-act="total" aria-label="Price details">' + GO.icon('info', 16) + '</button></span>' +
         '<button class="link t-caption c-tertiary total-line__fee" data-act="total" aria-label="Price details, incl. booking fee">incl. booking fee</button></div>' +
@@ -5297,7 +5308,7 @@ GO.router = (function () {
   }
   GO.totalLine = totalLine;
   // Sticky bar as on Offers and Details (user 03.11.2026; Total and Continue stood at the page end before):
-  // Total with "incl. transaction fee" opening the price details, Continue on the right
+  // Total with "incl. booking fee" opening the price details, Continue on the right
   function totalBar(T) {
     return '<div class="cta-bar cta-bar--total cta-inline"><div class="cta-inline__total" data-act="total">' +
         '<div class="cta-inline__sum"><span class="t-label-lg total-info">Total<button type="button" class="total-info__btn" data-act="total" aria-label="Price details">' + GO.icon('info', 16) + '</button></span><span class="t-h2 nowrap" aria-live="polite">' + money2(T.total) + '</span></div>' +
@@ -5786,9 +5797,9 @@ GO.router = (function () {
         '</dl>');
     }).join('');
     const seatRows = e.seats && s.children ? api.SEATS.filter(x => e.seats.n[x.id]).map(x => row((e.seats.n[x.id] > 1 ? e.seats.n[x.id] + '× ' : '') + esc(x.label), 'Free')).join('') : '';
-    const extraLines = T.lines.slice(1).filter(l => !l.voucher && l.label !== 'Transaction fee');
+    const extraLines = T.lines.slice(1).filter(l => !l.voucher && l.label !== 'Booking fee');
     const addons = extraLines.map(l => row(esc(l.label), money2(l.value))).join('') + seatRows;
-    const payLines = T.lines.filter(l => l.voucher || l.label === 'Transaction fee').map(l => row(esc(l.label), (l.value < 0 ? '−' : '') + money2(Math.abs(l.value)))).join('');
+    const payLines = T.lines.filter(l => l.voucher || l.label === 'Booking fee').map(l => row(esc(l.label), (l.value < 0 ? '−' : '') + money2(Math.abs(l.value)))).join('');
     return '<div class="sheet-handle" aria-hidden="true"></div>' +
       '<header class="sheet-header"><div class="sheet-header__titles"><h2 id="sheet-title" class="t-h1">Booking summary</h2></div>' +
       '<button class="icon-btn" data-act="close" aria-label="Close">' + ic('close', 24) + '</button></header>' +
@@ -5984,14 +5995,14 @@ GO.router = (function () {
     ['When does the money arrive?', 'Back on your card within 5–10 working days'],
   ];
   GO.screens['extras-money-back'] = {
-    overlay: true, base: 'extras', sheetClass: 'sheet--bottom',
+    overlay: true, base: 'extras', sheetClass: 'sheet--bottom sheet--full sheet--ride',
     render(s) {
       const price = refundPP(s, legs(s).filter(l => l.o)) + ' € per person';
       return '<div class="sheet-handle" aria-hidden="true"></div>' +
         '<header class="sheet-header"><div class="sheet-header__titles"><h2 id="sheet-title" class="t-h1">100% Money Back</h2></div>' +
         '<button class="icon-btn" data-act="close" aria-label="Close">' + ic('close', 24) + '</button></header>' +
         '<div class="sheet__body sheet__body--gap16">' +
-          '<ul class="nw-cover">' + RF_COVER.map(([q, a]) => '<li class="nw-cover__item">' + ic('check-circle', 20, 'icon--success') +
+          '<ul class="nw-cover">' + RF_COVER.map(([q, a]) => '<li class="nw-cover__item">' + ic('check', 20, 'icon--success') +
             '<span class="nw-cover__text"><span class="t-body-sm c-secondary">' + q + '</span><span class="t-label">' + a + '</span></span></li>').join('') + '</ul>' +
           '<button class="link t-label nw-terms" data-act="nw-terms">Terms and conditions of service</button>' +
         '</div>' +
@@ -6004,7 +6015,7 @@ GO.router = (function () {
     },
   };
   GO.screens['extras-no-worries'] = {
-    overlay: true, base: 'extras', sheetClass: 'sheet--bottom',
+    overlay: true, base: 'extras', sheetClass: 'sheet--bottom sheet--full sheet--ride',
     render(s) {
       const e = ex();
       // per person on the button, as on the card (user 12.11.2026; was the total for everyone)
@@ -6014,7 +6025,7 @@ GO.router = (function () {
         '<button class="icon-btn" data-act="close" aria-label="Close">' + ic('close', 24) + '</button></header>' +
         '<div class="sheet__body sheet__body--gap16">' +
           '<h3 class="t-h3">What does the package cover?</h3>' +
-          '<ul class="nw-cover">' + NW_COVER.map(([q, a]) => '<li class="nw-cover__item">' + ic('check-circle', 20, 'icon--success') +
+          '<ul class="nw-cover">' + NW_COVER.map(([q, a]) => '<li class="nw-cover__item">' + ic('check', 20, 'icon--success') +
             '<span class="nw-cover__text"><span class="t-body-sm c-secondary">' + q + '</span><span class="t-label">' + a + '</span></span></li>').join('') + '</ul>' +
           '<button class="link t-label nw-terms" data-act="nw-terms">Terms and conditions of service</button>' +
         '</div>' +
@@ -7002,7 +7013,7 @@ GO.router = (function () {
   // Saved cards (client 03.11.2026, as goopti.com's checkout): the cards of the signed-in account, from its earlier bookings.
   // Each is a white button like Apple Pay with the card's mark and "Mastercard •••• 3024", it pays at once.
   // Not on the list of ways to pay but in the open Bank card block, over the new card's fields (Phil 05.11.2026)
-  function savedCards() { const a = (GO.store.get().contact || {}).account; return (a && a.cards) || []; }
+  function savedCards() { const c = GO.store.get().contact || {}, a = c.account; if (a) return a.cards || []; return c.guestCards || [{ brand: 'Mastercard', last4: '3024' }, { brand: 'Visa', last4: '9223' }]; } // a guest sees the two demo cards too, as on desktop (user 18.11.2026)
   function savedBtn(c, i) {
     const id = 'saved-' + i, on = busy === id;
     return '<button type="button" class="pay-btn pay-btn--light pay-saved" data-act="pay" data-method="' + id + '"' + (busy ? ' disabled' : '') + (on ? ' aria-busy="true"' : '') + '>' +
@@ -7056,12 +7067,12 @@ GO.router = (function () {
       // v6 (Mobile 09.11.2026 3249:10605, user 09.11.2026): no visible "Choose a payment method:"; Bank card and Pay at Petrol are
       // white buttons 56 with a black outline, the logo first (v5: radio rows). Bank card opens the card block, Petrol books at once
       '<section class="pay-sec" aria-labelledby="pay-title"><h2 id="pay-title" class="sr-only">Choose a payment method</h2>' +
-        '<div class="pay-wallets">' + payBtn('revolut', GO.PAY.revolutPay, 'Pay with Revolut Pay') + payBtn('apple', GO.PAY.applePay, 'Pay with Apple Pay') + payBtn('google', GO.PAY.googlePay, 'Pay with Google Pay') + '</div>' +
-        // no "or" divider after Apple Pay (user 10.11.2026): one column of buttons
         '<div class="pay-wallets pay-other">' +
           '<button type="button" class="pay-btn pay-btn--light pay-btn--outline pay-card-btn" data-act="pay" data-method="card"' + (busy ? ' disabled' : '') + '>' +
-            '<span class="pay-btn__in"><span class="pay-marks pay-marks--bare">' + GO.PAY.visaMark + GO.PAY.mastercardMark + '</span><span>Bank card</span></span></button>' +
+            '<span class="pay-btn__in"><span class="pay-marks pay-marks--bare">' + GO.PAY.visaMark + GO.PAY.mastercardMark + GO.PAY.amex.replace('width="25" height="25"', 'width="21" height="21"') + '</span><span>Bank card</span></span></button>' +
         '</div>' +
+        // Bank card first, Revolut Pay last; Amex beside Visa and Mastercard (user 19.11.2026)
+        '<div class="pay-wallets">' + payBtn('apple', GO.PAY.applePay, 'Pay with Apple Pay') + payBtn('google', GO.PAY.googlePay, 'Pay with Google Pay') + payBtn('revolut', GO.PAY.revolutPay, 'Pay with Revolut Pay') + '</div>' +
       '</section></div>';
   }
   function petrolGo() {
@@ -7183,7 +7194,8 @@ GO.router = (function () {
     removeCard(i) {
       if (busy) return;
       const c = GO.store.get().contact || {}, a = c.account;
-      if (!a || !a.cards || !a.cards[i]) return;
+      if (!a) { const g = savedCards(); if (!g[i]) return; GO.store.set({ contact: Object.assign({}, c, { guestCards: g.filter((_, k) => k !== i) }) }); pay.choice = null; errors = {}; GO.router.refresh(); u.toast(g[i].brand + ' •••• ' + g[i].last4 + ' removed'); return; }
+      if (!a.cards || !a.cards[i]) return;
       const gone = a.cards[i];
       GO.store.set({ contact: Object.assign({}, c, { account: Object.assign({}, a, { cards: a.cards.filter((_, k) => k !== i) }) }) });
       pay.choice = null; errors = {};
